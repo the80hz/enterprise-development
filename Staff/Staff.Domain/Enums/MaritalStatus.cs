@@ -1,4 +1,4 @@
-﻿namespace Staff.Domain;
+﻿namespace Staff.Domain.Enums;
 
 /// <summary>
 /// Перечисление, представляющее семейное положение сотрудника.

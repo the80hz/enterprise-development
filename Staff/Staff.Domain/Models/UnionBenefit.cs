@@ -1,4 +1,6 @@
-﻿namespace Staff.Domain;
+﻿using Staff.Domain.Enums;
+
+namespace Staff.Domain.Models;
 
 /// <summary>
 /// Представляет льготную профсоюзную путевку, полученную сотрудником.
