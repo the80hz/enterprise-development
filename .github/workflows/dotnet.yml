@@ -1,5 +1,3 @@
-# .github/workflows/dotnet.yml
-
 name: .NET Core CI
 
 on:
@@ -23,10 +21,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore Staff/
+      run: dotnet restore Staff.sln
 
     - name: Build
-      run: dotnet build Staff/ --no-restore --configuration Release
+      run: dotnet build Staff.sln --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test Staff/Staff.Test/Staff.Tests.csproj --no-build --verbosity normal
+      run: dotnet test Staff.sln --no-build --verbosity normal
