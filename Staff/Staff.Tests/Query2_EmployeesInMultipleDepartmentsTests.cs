@@ -200,11 +200,22 @@ namespace Staff.Tests.Tests
                 .ToList();
 
             // Assert
-            Assert.Single(result); // Петрова Мария Петровна
-            var employee = result.First();
-            Assert.Equal("Петрова", employee.Surname);
-            Assert.Equal("Мария", employee.Name);
-            Assert.Equal("Петровна", employee.Patronymic);
+            // Проверяем, что количество сотрудников в результате равно 2
+            Assert.Equal(2, result.Count);
+
+            // Проверяем, что сотрудники отсортированы по ФИО
+
+            // Первый сотрудник
+            var firstEmployee = result[0];
+            Assert.Equal("Петрова", firstEmployee.Surname);
+            Assert.Equal("Мария", firstEmployee.Name);
+            Assert.Equal("Петровна", firstEmployee.Patronymic);
+
+            // Второй сотрудник
+            var secondEmployee = result[1];
+            Assert.Equal("Сидоров", secondEmployee.Surname);
+            Assert.Equal("Алексей", secondEmployee.Name);
+            Assert.Equal("Сидорович", secondEmployee.Patronymic);
         }
     }
 }
