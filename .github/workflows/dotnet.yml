@@ -24,9 +24,9 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore Staff/Staff.sln
-
+      
     - name: Build
-      run: dotnet build Staff/Staff.sln --no-restore --configuration Release
-
+      run: dotnet build --no-restore Staff/Staff.sln
+      
     - name: Test
-      run: dotnet test Staff/Staff.sln --no-build --verbosity normal
+      run: dotnet test --no-restore Staff/Staff.sln
