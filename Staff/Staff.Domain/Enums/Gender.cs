@@ -1,9 +1,8 @@
-﻿namespace Staff.Enums
+﻿namespace Staff.Domain;
+
+public enum Gender
 {
-    public enum Gender
-    {
-        Male,
-        Female,
-        Other
-    }
+    Male,
+    Female,
+    Other
 }

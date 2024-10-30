@@ -1,10 +1,9 @@
-﻿namespace Staff.Enums
+﻿namespace Staff.Domain;
+
+public enum MaritalStatus
 {
-    public enum MaritalStatus
-    {
-        Single,
-        Married,
-        Divorced,
-        Widowed
-    }
+    Single,
+    Married,
+    Divorced,
+    Widowed
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using Staff.Enums;
+﻿namespace Staff.Domain;
 
-namespace Staff.Models
+public class UnionBenefit
 {
-    public class UnionBenefit
-    {
-        public int UnionBenefitId { get; set; }
-        public BenefitType BenefitType { get; set; }
-        public DateTime DateReceived { get; set; }
-    }
+    public int UnionBenefitId { get; set; }
+    public BenefitType BenefitType { get; set; }
+    public DateTime DateReceived { get; set; }
 }

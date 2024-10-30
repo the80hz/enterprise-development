@@ -1,9 +1,8 @@
-﻿namespace Staff.Enums
+﻿namespace Staff.Domain;
+
+public enum BenefitType
 {
-    public enum BenefitType
-    {
-        SanatoriumVoucher,
-        HolidayHomeVoucher,
-        PioneerCampVoucher
-    }
+    SanatoriumVoucher,
+    HolidayHomeVoucher,
+    PioneerCampVoucher
 }

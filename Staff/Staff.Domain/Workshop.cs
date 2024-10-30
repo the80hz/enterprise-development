@@ -1,8 +1,7 @@
-﻿namespace Staff.Models
+﻿namespace Staff.Domain;
+
+public class Workshop
 {
-    public class Workshop
-    {
-        public int WorkshopId { get; set; }
-        public string Name { get; set; }
-    }
+    public int WorkshopId { get; set; }
+    public string Name { get; set; }
 }
