@@ -14,7 +14,7 @@
         {
             // Arrange
             var employees = _fixture.GetTestEmployees();
-            string selectedDepartmentName = "Отдел продаж";
+            const string selectedDepartmentName = "Отдел продаж";
 
             // Act
             var result = employees
