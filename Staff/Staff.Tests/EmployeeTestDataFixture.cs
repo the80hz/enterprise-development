@@ -61,7 +61,7 @@ namespace Staff.Tests
                     DateOfBirth = new DateTime(1985, 5, 20),
                     Gender = Gender.Male,
                     DateOfHire = new DateTime(2010, 3, 15),
-                    Departments = new List<Department> { departmentSales },
+                    Departments = [departmentSales],
                     Workshop = workshop1,
                     Position = positionManager,
                     Address = address1,
@@ -70,25 +70,25 @@ namespace Staff.Tests
                     MaritalStatus = MaritalStatus.Married,
                     FamilySize = 4,
                     NumberOfChildren = 2,
-                    EmploymentArchive = new List<EmploymentArchiveRecord>
-                    {
+                    EmploymentArchive =
+                    [
                         new EmploymentArchiveRecord
                         {
                             StartDate = new DateTime(2010, 3, 15),
                             EndDate = null,
                             Position = positionManager
                         }
-                    },
+                    ],
                     IsUnionMember = true,
-                    UnionBenefits = new List<UnionBenefit>
-                    {
+                    UnionBenefits =
+                    [
                         new UnionBenefit
                         {
                             UnionBenefitId = 1,
                             BenefitType = BenefitType.SanatoriumVoucher,
                             DateReceived = DateTime.Now.AddMonths(-6)
                         }
-                    }
+                    ]
                 },
                 new Employee
                 {
@@ -99,7 +99,7 @@ namespace Staff.Tests
                     DateOfBirth = new DateTime(1990, 8, 12),
                     Gender = Gender.Female,
                     DateOfHire = new DateTime(2015, 7, 1),
-                    Departments = new List<Department> { departmentDevelopment, departmentHr },
+                    Departments = [departmentDevelopment, departmentHr],
                     Workshop = workshop2,
                     Position = positionDeveloper,
                     Address = address2,
@@ -108,15 +108,15 @@ namespace Staff.Tests
                     MaritalStatus = MaritalStatus.Single,
                     FamilySize = 1,
                     NumberOfChildren = 0,
-                    EmploymentArchive = new List<EmploymentArchiveRecord>
-                    {
+                    EmploymentArchive =
+                    [
                         new EmploymentArchiveRecord
                         {
                             StartDate = new DateTime(2015, 7, 1),
                             EndDate = null,
                             Position = positionDeveloper
                         }
-                    },
+                    ],
                     IsUnionMember = false
                 },
                 new Employee
@@ -128,7 +128,7 @@ namespace Staff.Tests
                     DateOfBirth = new DateTime(1975, 11, 30),
                     Gender = Gender.Male,
                     DateOfHire = new DateTime(2000, 1, 20),
-                    Departments = new List<Department> { departmentSales, departmentDevelopment },
+                    Departments = [departmentSales, departmentDevelopment],
                     Workshop = workshop1,
                     Position = positionHrSpecialist,
                     Address = address3,
@@ -137,8 +137,8 @@ namespace Staff.Tests
                     MaritalStatus = MaritalStatus.Divorced,
                     FamilySize = 3,
                     NumberOfChildren = 1,
-                    EmploymentArchive = new List<EmploymentArchiveRecord>
-                    {
+                    EmploymentArchive =
+                    [
                         new EmploymentArchiveRecord
                         {
                             StartDate = new DateTime(2000, 1, 20),
@@ -151,10 +151,10 @@ namespace Staff.Tests
                             EndDate = null,
                             Position = positionHrSpecialist
                         }
-                    },
+                    ],
                     IsUnionMember = true,
-                    UnionBenefits = new List<UnionBenefit>
-                    {
+                    UnionBenefits =
+                    [
                         new UnionBenefit
                         {
                             UnionBenefitId = 2,
@@ -167,7 +167,7 @@ namespace Staff.Tests
                             BenefitType = BenefitType.PioneerCampVoucher,
                             DateReceived = DateTime.Now.AddMonths(-2)
                         }
-                    }
+                    ]
                 }
             };
 
