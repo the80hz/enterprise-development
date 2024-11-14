@@ -15,5 +15,5 @@ public class Department
     /// <summary>
     /// Название отдела.
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }

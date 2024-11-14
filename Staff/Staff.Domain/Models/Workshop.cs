@@ -15,5 +15,5 @@ public class Workshop
     /// <summary>
     /// Название цеха.
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }

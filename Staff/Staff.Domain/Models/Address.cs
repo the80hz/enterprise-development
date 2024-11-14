@@ -10,25 +10,25 @@ public class Address
     /// <summary>
     /// Улица.
     /// </summary>
-    public string Street { get; set; }
+    public required string Street { get; set; }
 
     /// <summary>
     /// Номер дома.
     /// </summary>
-    public string HouseNumber { get; set; }
+    public required string HouseNumber { get; set; }
 
     /// <summary>
     /// Город.
     /// </summary>
-    public string City { get; set; }
+    public required string City { get; set; }
 
     /// <summary>
     /// Почтовый индекс.
     /// </summary>
-    public string PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
     /// <summary>
     /// Страна.
     /// </summary>
-    public string Country { get; set; }
+    public required string Country { get; set; }
 }
