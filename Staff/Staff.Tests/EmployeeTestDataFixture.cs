@@ -52,8 +52,7 @@ namespace Staff.Tests
             // Создание сотрудников
             var employees = new List<Employee>
             {
-                new Employee
-                {
+                new() {
                     RegistrationNumber = 1001,
                     Surname = "Иванов",
                     Name = "Иван",
@@ -90,8 +89,7 @@ namespace Staff.Tests
                         }
                     ]
                 },
-                new Employee
-                {
+                new() {
                     RegistrationNumber = 1002,
                     Surname = "Петрова",
                     Name = "Мария",
@@ -119,8 +117,7 @@ namespace Staff.Tests
                     ],
                     IsUnionMember = false
                 },
-                new Employee
-                {
+                new() {
                     RegistrationNumber = 1003,
                     Surname = "Сидоров",
                     Name = "Алексей",
