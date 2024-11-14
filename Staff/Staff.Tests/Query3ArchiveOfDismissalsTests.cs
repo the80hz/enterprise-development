@@ -2,13 +2,6 @@
 {
     public class Query3ArchiveOfDismissalsTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query3ArchiveOfDismissalsTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void ArchiveOfDismissals_ShouldReturnCorrectRecords()
         {

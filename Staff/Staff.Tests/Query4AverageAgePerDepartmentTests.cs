@@ -6,13 +6,6 @@ namespace Staff.Tests
 {
     public class Query4AverageAgePerDepartmentTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query4AverageAgePerDepartmentTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void AverageAgePerDepartment_ShouldReturnCorrectAverages()
         {

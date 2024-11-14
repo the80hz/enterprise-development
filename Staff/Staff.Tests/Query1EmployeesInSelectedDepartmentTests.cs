@@ -2,13 +2,6 @@
 {
     public class Query1EmployeesInSelectedDepartmentTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query1EmployeesInSelectedDepartmentTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void EmployeesInSelectedDepartment_ShouldReturnCorrectEmployees()
         {

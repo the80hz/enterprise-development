@@ -2,13 +2,6 @@
 {
     public class Query2EmployeesInMultipleDepartmentsTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query2EmployeesInMultipleDepartmentsTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void EmployeesInMultipleDepartments_ShouldBeOrderedByFullName()
         {

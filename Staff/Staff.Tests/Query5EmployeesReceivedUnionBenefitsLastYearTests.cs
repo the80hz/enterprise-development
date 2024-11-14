@@ -2,13 +2,6 @@
 {
     public class Query5EmployeesReceivedUnionBenefitsLastYearTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query5EmployeesReceivedUnionBenefitsLastYearTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void EmployeesReceivedUnionBenefitsLastYear_ShouldReturnCorrectEmployees()
         {

@@ -2,13 +2,6 @@
 {
     public class Query6Top5EmployeesByTenureTests : IClassFixture<EmployeeTestDataFixture>
     {
-        private readonly EmployeeTestDataFixture _fixture;
-
-        public Query6Top5EmployeesByTenureTests(EmployeeTestDataFixture fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void Top5EmployeesByTenure_ShouldReturnCorrectOrder()
         {
