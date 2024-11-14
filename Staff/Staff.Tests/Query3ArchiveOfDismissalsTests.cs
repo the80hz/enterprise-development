@@ -4,9 +4,9 @@ using Staff.Domain.Models;
 namespace Staff.Tests;
 
 /// <summary>
-/// Тесты для запроса 6: Вывод топ 5 сотрудников, имеющих наибольший стаж работы на предприятии.
+/// Тесты для запроса 3: Вывод архива увольнений.
 /// </summary>
-public class Query6_Top5EmployeesByTenureTests
+public class Query3ArchiveOfDismissalsTests
 {
     /// <summary>
     /// Создает тестовые данные.
@@ -182,35 +182,35 @@ public class Query6_Top5EmployeesByTenureTests
     }
 
     [Fact]
-    public void Top5EmployeesByTenure_ShouldReturnCorrectOrder()
+    public void ArchiveOfDismissals_ShouldReturnCorrectRecords()
     {
         // Arrange
         var employees = GetTestEmployees();
-        var currentDate = DateTime.Now;
 
         // Act
         var result = employees
-            .Select(e => new
-            {
-                Employee = e,
-                Tenure = (currentDate - e.DateOfHire).TotalDays
-            })
-            .OrderByDescending(e => e.Tenure)
-            .Take(5)
-            .Select(e => new
-            {
-                e.Employee.RegistrationNumber,
-                FullName = $"{e.Employee.Surname} {e.Employee.Name} {e.Employee.Patronymic}",
-                TenureYears = e.Tenure / 365.25
-            })
+            .SelectMany(e => e.EmploymentArchive
+                .Where(a => a.EndDate != null)
+                .Select(a => new
+                {
+                    e.RegistrationNumber,
+                    FullName = $"{e.Surname} {e.Name} {e.Patronymic}",
+                    e.DateOfBirth,
+                    WorkshopName = e.Workshop.Name,
+                    Departments = string.Join(", ", e.Departments.Select(d => d.Name)),
+                    Position = a.Position.Title
+                }))
             .ToList();
 
         // Assert
-        Assert.Equal(3, result.Count); // У нас 3 сотрудника
-
-        // Проверка порядка сотрудников по стажу
-        Assert.Equal(1003, result[0].RegistrationNumber); // Сидоров (2000)
-        Assert.Equal(1001, result[1].RegistrationNumber); // Иванов (2010)
-        Assert.Equal(1002, result[2].RegistrationNumber); // Петрова (2015)
+        Assert.Single(result); // Сидоров уволен с должности Менеджера
+        var dismissal = result.First();
+        Assert.Equal(1003, dismissal.RegistrationNumber);
+        Assert.Equal("Сидоров Алексей Сидорович", dismissal.FullName);
+        Assert.Equal(new DateTime(1975, 11, 30), dismissal.DateOfBirth);
+        Assert.Equal("Цех №1", dismissal.WorkshopName);
+        Assert.Contains("Отдел продаж", dismissal.Departments);
+        Assert.Contains("Отдел разработки", dismissal.Departments);
+        Assert.Equal("Менеджер", dismissal.Position);
     }
 }

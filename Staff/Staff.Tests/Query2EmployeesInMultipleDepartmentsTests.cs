@@ -6,7 +6,7 @@ namespace Staff.Tests;
 /// <summary>
 /// Тесты для запроса 2: Вывод сотрудников, работающих в нескольких отделах, упорядоченных по ФИО.
 /// </summary>
-public class Query2_EmployeesInMultipleDepartmentsTests
+public class Query2EmployeesInMultipleDepartmentsTests
 {
     /// <summary>
     /// Создает тестовые данные.

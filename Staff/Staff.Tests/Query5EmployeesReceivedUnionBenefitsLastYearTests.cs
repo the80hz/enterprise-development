@@ -4,9 +4,9 @@ using Staff.Domain.Models;
 namespace Staff.Tests;
 
 /// <summary>
-/// Тесты для запроса 4: Вывод среднего возраста сотрудников в каждом отделе.
+/// Тесты для запроса 5: Вывод сотрудников, получивших льготные профсоюзные путевки в прошлом году.
 /// </summary>
-public class Query4_AverageAgePerDepartmentTests
+public class Query5EmployeesReceivedUnionBenefitsLastYearTests
 {
     /// <summary>
     /// Создает тестовые данные.
@@ -182,44 +182,36 @@ public class Query4_AverageAgePerDepartmentTests
     }
 
     [Fact]
-    public void AverageAgePerDepartment_ShouldReturnCorrectAverages()
+    public void EmployeesReceivedUnionBenefitsLastYear_ShouldReturnCorrectEmployees()
     {
         // Arrange
         var employees = GetTestEmployees();
-        var currentDate = DateTime.Now;
+        var lastYear = DateTime.Now.AddYears(-1);
 
         // Act
         var result = employees
-            .SelectMany(e => e.Departments, (e, d) => new { Employee = e, Department = d })
-            .GroupBy(ed => ed.Department.Name)
-            .Select(g => new
+            .Where(e => e.IsUnionMember &&
+                        e.UnionBenefits.Any(b => b.DateReceived >= lastYear))
+            .Select(e => new
             {
-                Department = g.Key,
-                AverageAge = g.Average(ed => (currentDate - ed.Employee.DateOfBirth).TotalDays / 365.25)
+                e.RegistrationNumber,
+                FullName = $"{e.Surname} {e.Name} {e.Patronymic}",
+                Benefits = e.UnionBenefits
+                    .Where(b => b.DateReceived >= lastYear)
+                    .Select(b => b.BenefitType.ToString())
+                    .ToList()
             })
             .ToList();
 
         // Assert
-        Assert.Equal(3, result.Count); // "Отдел продаж", "Отдел разработки", "Отдел кадров"
+        Assert.Equal(2, result.Count); // Иванов и Сидоров
 
-        // Проверка "Отдел продаж"
-        var salesDept = result.FirstOrDefault(r => r.Department == "Отдел продаж");
-        Assert.NotNull(salesDept);
-        double expectedAverageAgeSales = ((currentDate - new DateTime(1985, 5, 20)).TotalDays / 365.25 +
-                                          (currentDate - new DateTime(1975, 11, 30)).TotalDays / 365.25) / 2;
-        Assert.InRange(salesDept.AverageAge, expectedAverageAgeSales - 1, expectedAverageAgeSales + 1);
+        var ivanov = result.FirstOrDefault(r => r.RegistrationNumber == 1001);
+        Assert.NotNull(ivanov);
+        Assert.Contains("SanatoriumVoucher", ivanov.Benefits);
 
-        // Проверка "Отдел разработки"
-        var developmentDept = result.FirstOrDefault(r => r.Department == "Отдел разработки");
-        Assert.NotNull(developmentDept);
-        double expectedAverageAgeDevelopment = ((currentDate - new DateTime(1990, 8, 12)).TotalDays / 365.25 +
-                                                (currentDate - new DateTime(1975, 11, 30)).TotalDays / 365.25) / 2;
-        Assert.InRange(developmentDept.AverageAge, expectedAverageAgeDevelopment - 1, expectedAverageAgeDevelopment + 1);
-
-        // Проверка "Отдел кадров"
-        var hrDept = result.FirstOrDefault(r => r.Department == "Отдел кадров");
-        Assert.NotNull(hrDept);
-        double expectedAverageAgeHR = (currentDate - new DateTime(1990, 8, 12)).TotalDays / 365.25;
-        Assert.InRange(hrDept.AverageAge, expectedAverageAgeHR - 1, expectedAverageAgeHR + 1);
+        var sidorov = result.FirstOrDefault(r => r.RegistrationNumber == 1003);
+        Assert.NotNull(sidorov);
+        Assert.Contains("PioneerCampVoucher", sidorov.Benefits);
     }
 }

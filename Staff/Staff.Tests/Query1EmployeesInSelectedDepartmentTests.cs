@@ -6,7 +6,7 @@ namespace Staff.Tests;
 /// <summary>
 /// Тесты для запроса 1: Вывод всех сотрудников выбранного отдела.
 /// </summary>
-public class Query1_EmployeesInSelectedDepartmentTests
+public class Query1EmployeesInSelectedDepartmentTests
 {
     /// <summary>
     /// Создает тестовые данные.
