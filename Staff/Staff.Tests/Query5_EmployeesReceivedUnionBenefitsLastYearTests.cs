@@ -1,7 +1,7 @@
 ﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
 
-namespace Staff.Tests.Tests;
+namespace Staff.Tests;
 
 /// <summary>
 /// Тесты для запроса 5: Вывод сотрудников, получивших льготные профсоюзные путевки в прошлом году.

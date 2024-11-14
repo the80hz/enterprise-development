@@ -1,7 +1,7 @@
 ﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
 
-namespace Staff.Tests.Tests;
+namespace Staff.Tests;
 
 /// <summary>
 /// Тесты для запроса 2: Вывод сотрудников, работающих в нескольких отделах, упорядоченных по ФИО.

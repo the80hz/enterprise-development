@@ -1,7 +1,7 @@
 ﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
 
-namespace Staff.Tests.Tests;
+namespace Staff.Tests;
 
 /// <summary>
 /// Тесты для запроса 4: Вывод среднего возраста сотрудников в каждом отделе.

@@ -1,7 +1,7 @@
 ﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
 
-namespace Staff.Tests.Tests;
+namespace Staff.Tests;
 
 /// <summary>
 /// Тесты для запроса 6: Вывод топ 5 сотрудников, имеющих наибольший стаж работы на предприятии.

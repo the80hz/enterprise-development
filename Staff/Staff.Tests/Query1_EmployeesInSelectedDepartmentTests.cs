@@ -1,7 +1,7 @@
 ﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
 
-namespace Staff.Tests.Tests;
+namespace Staff.Tests;
 
 /// <summary>
 /// Тесты для запроса 1: Вывод всех сотрудников выбранного отдела.
