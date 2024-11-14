@@ -5,7 +5,7 @@ namespace Staff.Tests
 {
     public class EmployeeTestDataFixture
     {
-        public List<Employee> GetTestEmployees()
+        public static List<Employee> GetTestEmployees()
         {
             // Создание отделов
             var departmentSales = new Department { DepartmentId = 1, Name = "Отдел продаж" };

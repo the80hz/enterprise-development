@@ -17,7 +17,7 @@ namespace Staff.Tests
         public void AverageAgePerDepartment_ShouldReturnCorrectAverages()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
             var currentDate = DateTime.Now;
 
             // Act

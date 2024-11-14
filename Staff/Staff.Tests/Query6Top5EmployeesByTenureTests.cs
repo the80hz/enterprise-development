@@ -13,7 +13,7 @@
         public void Top5EmployeesByTenure_ShouldReturnCorrectOrder()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
             var currentDate = DateTime.Now;
 
             // Act

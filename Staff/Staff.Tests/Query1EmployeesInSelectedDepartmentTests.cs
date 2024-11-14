@@ -13,7 +13,7 @@
         public void EmployeesInSelectedDepartment_ShouldReturnCorrectEmployees()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
             const string selectedDepartmentName = "Отдел продаж";
 
             // Act

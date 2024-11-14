@@ -13,7 +13,7 @@
         public void EmployeesInMultipleDepartments_ShouldBeOrderedByFullName()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
 
             // Act
             var result = employees

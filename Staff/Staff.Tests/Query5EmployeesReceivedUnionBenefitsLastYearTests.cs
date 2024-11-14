@@ -13,7 +13,7 @@
         public void EmployeesReceivedUnionBenefitsLastYear_ShouldReturnCorrectEmployees()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
             var lastYear = DateTime.Now.AddYears(-1);
 
             // Act

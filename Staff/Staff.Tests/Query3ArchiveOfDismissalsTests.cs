@@ -13,7 +13,7 @@
         public void ArchiveOfDismissals_ShouldReturnCorrectRecords()
         {
             // Arrange
-            var employees = _fixture.GetTestEmployees();
+            var employees = EmployeeTestDataFixture.GetTestEmployees();
 
             // Act
             var result = employees
