@@ -14,7 +14,7 @@ public class Employee
     public DateTime DateOfBirth { get; set; }
     public Gender Gender { get; set; }
     public DateTime DateOfHire { get; set; }
-    public List<Department> Departments { get; set; } = new List<Department>();
+    public List<Department> Departments { get; set; } = [];
     public required Workshop Workshop { get; set; }
     public required Position Position { get; set; }
     public required Address Address { get; set; }
@@ -23,7 +23,7 @@ public class Employee
     public MaritalStatus MaritalStatus { get; set; }
     public int FamilySize { get; set; }
     public int NumberOfChildren { get; set; }
-    public List<EmploymentArchiveRecord> EmploymentArchive { get; set; } = new List<EmploymentArchiveRecord>();
+    public List<EmploymentArchiveRecord> EmploymentArchive { get; set; } = [];
     public bool IsUnionMember { get; set; }
-    public List<UnionBenefit> UnionBenefits { get; set; } = new List<UnionBenefit>();
+    public List<UnionBenefit> UnionBenefits { get; set; } = [];
 }
