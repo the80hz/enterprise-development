@@ -10,7 +10,7 @@ namespace Staff.Tests
             // Создание отделов
             var departmentSales = new Department { DepartmentId = 1, Name = "Отдел продаж" };
             var departmentDevelopment = new Department { DepartmentId = 2, Name = "Отдел разработки" };
-            var departmentHR = new Department { DepartmentId = 3, Name = "Отдел кадров" };
+            var departmentHr = new Department { DepartmentId = 3, Name = "Отдел кадров" };
 
             // Создание цехов
             var workshop1 = new Workshop { WorkshopId = 1, Name = "Цех №1" };
@@ -19,7 +19,7 @@ namespace Staff.Tests
             // Создание должностей
             var positionManager = new Position { PositionId = 1, Title = "Менеджер" };
             var positionDeveloper = new Position { PositionId = 2, Title = "Разработчик" };
-            var positionHRSpecialist = new Position { PositionId = 3, Title = "HR-специалист" };
+            var positionHrSpecialist = new Position { PositionId = 3, Title = "HR-специалист" };
 
             // Создание адресов
             var address1 = new Address
@@ -99,7 +99,7 @@ namespace Staff.Tests
                     DateOfBirth = new DateTime(1990, 8, 12),
                     Gender = Gender.Female,
                     DateOfHire = new DateTime(2015, 7, 1),
-                    Departments = new List<Department> { departmentDevelopment, departmentHR },
+                    Departments = new List<Department> { departmentDevelopment, departmentHr },
                     Workshop = workshop2,
                     Position = positionDeveloper,
                     Address = address2,
@@ -130,7 +130,7 @@ namespace Staff.Tests
                     DateOfHire = new DateTime(2000, 1, 20),
                     Departments = new List<Department> { departmentSales, departmentDevelopment },
                     Workshop = workshop1,
-                    Position = positionHRSpecialist,
+                    Position = positionHrSpecialist,
                     Address = address3,
                     WorkPhone = "345-67-89",
                     HomePhone = "890-34-56",
@@ -149,7 +149,7 @@ namespace Staff.Tests
                         {
                             StartDate = new DateTime(2010, 3, 16),
                             EndDate = null,
-                            Position = positionHRSpecialist
+                            Position = positionHrSpecialist
                         }
                     },
                     IsUnionMember = true,

@@ -51,8 +51,8 @@ namespace Staff.Tests
             // Проверка "Отдел кадров"
             var hrDept = result.FirstOrDefault(r => r.Department == "Отдел кадров");
             Assert.NotNull(hrDept);
-            var expectedAgeHR = (currentDate - new DateTime(1990, 8, 12)).TotalDays / 365.25;
-            Assert.InRange(hrDept.AverageAge, expectedAgeHR - 1, expectedAgeHR + 1);
+            var expectedAgeHr = (currentDate - new DateTime(1990, 8, 12)).TotalDays / 365.25;
+            Assert.InRange(hrDept.AverageAge, expectedAgeHr - 1, expectedAgeHr + 1);
         }
     }
 }
