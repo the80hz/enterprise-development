@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Staff.Domain.Enums;
 using Staff.Domain.Models;
-using Staff.Domain.Enums;
-using Xunit;
 
 namespace Staff.Tests.Tests;
 

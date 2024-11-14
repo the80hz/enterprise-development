@@ -1,6 +1,4 @@
-﻿using Staff.Domain.Enums;
-
-namespace Staff.Domain.Models;
+﻿namespace Staff.Domain.Models;
 
 /// <summary>
 /// Представляет цех предприятия.
