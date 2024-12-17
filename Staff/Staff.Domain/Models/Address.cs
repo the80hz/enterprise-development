@@ -6,6 +6,11 @@
 public class Address
 {
     /// <summary>
+    /// Идентификатор адреса.
+    /// </summary>
+    public int AddressId { get; set; }
+
+    /// <summary>
     /// Улица.
     /// </summary>
     public required string Street { get; set; }
