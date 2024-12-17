@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Staff.Domain.Models;
+using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -7,12 +9,19 @@ namespace Staff.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class WorkshopController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private static readonly List<Workshop> Workshops = new();
+
+    public WorkshopController(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
 
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(Workshops);
+        var dtos = _mapper.Map<List<WorkshopDto>>(Workshops);
+        return Ok(dtos);
     }
 
     [HttpGet("{id}")]
@@ -23,26 +32,29 @@ public class WorkshopController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(workshop);
+        var dto = _mapper.Map<WorkshopDto>(workshop);
+        return Ok(dto);
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Workshop workshop)
+    public IActionResult Post([FromBody] WorkshopDto dto)
     {
+        var workshop = _mapper.Map<Workshop>(dto);
         workshop.WorkshopId = Workshops.Count + 1;
         Workshops.Add(workshop);
-        return CreatedAtAction(nameof(Get), new { id = workshop.WorkshopId }, workshop);
+        var createdDto = _mapper.Map<WorkshopDto>(workshop);
+        return CreatedAtAction(nameof(Get), new { id = workshop.WorkshopId }, createdDto);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Workshop updatedWorkshop)
+    public IActionResult Put(int id, [FromBody] WorkshopDto updatedDto)
     {
         var workshop = Workshops.FirstOrDefault(w => w.WorkshopId == id);
         if (workshop == null)
         {
             return NotFound();
         }
-        workshop.Name = updatedWorkshop.Name;
+        _mapper.Map(updatedDto, workshop);
         return NoContent();
     }
 

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Staff.Domain.Models;
+using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -7,12 +9,19 @@ namespace Staff.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private static readonly List<Employee> Employees = new();
+
+    public EmployeeController(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
 
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(Employees);
+        var employeeDtos = _mapper.Map<List<EmployeeDto>>(Employees);
+        return Ok(employeeDtos);
     }
 
     [HttpGet("{id}")]
@@ -23,43 +32,29 @@ public class EmployeeController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(employee);
+        var employeeDto = _mapper.Map<EmployeeDto>(employee);
+        return Ok(employeeDto);
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Employee employee)
+    public IActionResult Post([FromBody] EmployeeDto employeeDto)
     {
+        var employee = _mapper.Map<Employee>(employeeDto);
         employee.RegistrationNumber = Employees.Count + 1;
         Employees.Add(employee);
-        return CreatedAtAction(nameof(Get), new { id = employee.RegistrationNumber }, employee);
+        var createdDto = _mapper.Map<EmployeeDto>(employee);
+        return CreatedAtAction(nameof(Get), new { id = employee.RegistrationNumber }, createdDto);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Employee updatedEmployee)
+    public IActionResult Put(int id, [FromBody] EmployeeDto updatedEmployeeDto)
     {
         var employee = Employees.FirstOrDefault(e => e.RegistrationNumber == id);
         if (employee == null)
         {
             return NotFound();
         }
-        employee.Surname = updatedEmployee.Surname;
-        employee.Name = updatedEmployee.Name;
-        employee.Patronymic = updatedEmployee.Patronymic;
-        employee.DateOfBirth = updatedEmployee.DateOfBirth;
-        employee.Gender = updatedEmployee.Gender;
-        employee.DateOfHire = updatedEmployee.DateOfHire;
-        employee.Departments = updatedEmployee.Departments;
-        employee.Workshop = updatedEmployee.Workshop;
-        employee.Position = updatedEmployee.Position;
-        employee.Address = updatedEmployee.Address;
-        employee.WorkPhone = updatedEmployee.WorkPhone;
-        employee.HomePhone = updatedEmployee.HomePhone;
-        employee.MaritalStatus = updatedEmployee.MaritalStatus;
-        employee.FamilySize = updatedEmployee.FamilySize;
-        employee.NumberOfChildren = updatedEmployee.NumberOfChildren;
-        employee.EmploymentArchive = updatedEmployee.EmploymentArchive;
-        employee.IsUnionMember = updatedEmployee.IsUnionMember;
-        employee.UnionBenefits = updatedEmployee.UnionBenefits;
+        _mapper.Map(updatedEmployeeDto, employee);
         return NoContent();
     }
 

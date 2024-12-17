@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Staff.Domain.Models;
+using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -7,12 +9,19 @@ namespace Staff.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class EmploymentArchiveRecordController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = new();
+
+    public EmploymentArchiveRecordController(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
 
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(EmploymentArchiveRecords);
+        var dtos = _mapper.Map<List<EmploymentArchiveRecordDto>>(EmploymentArchiveRecords);
+        return Ok(dtos);
     }
 
     [HttpGet("{id}")]
@@ -23,28 +32,29 @@ public class EmploymentArchiveRecordController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(record);
+        var dto = _mapper.Map<EmploymentArchiveRecordDto>(record);
+        return Ok(dto);
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] EmploymentArchiveRecord record)
+    public IActionResult Post([FromBody] EmploymentArchiveRecordDto dto)
     {
+        var record = _mapper.Map<EmploymentArchiveRecord>(dto);
         record.RecordId = EmploymentArchiveRecords.Count + 1;
         EmploymentArchiveRecords.Add(record);
-        return CreatedAtAction(nameof(Get), new { id = record.RecordId }, record);
+        var createdDto = _mapper.Map<EmploymentArchiveRecordDto>(record);
+        return CreatedAtAction(nameof(Get), new { id = record.RecordId }, createdDto);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] EmploymentArchiveRecord updatedRecord)
+    public IActionResult Put(int id, [FromBody] EmploymentArchiveRecordDto updatedDto)
     {
         var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
         }
-        record.StartDate = updatedRecord.StartDate;
-        record.EndDate = updatedRecord.EndDate;
-        record.Position = updatedRecord.Position;
+        _mapper.Map(updatedDto, record);
         return NoContent();
     }
 
