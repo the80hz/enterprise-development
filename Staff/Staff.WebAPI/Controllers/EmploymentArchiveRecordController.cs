@@ -18,7 +18,7 @@ public class EmploymentArchiveRecordController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.Id == id);
+        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
@@ -29,15 +29,15 @@ public class EmploymentArchiveRecordController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] EmploymentArchiveRecord record)
     {
-        record.Id = EmploymentArchiveRecords.Count + 1;
+        record.RecordId = EmploymentArchiveRecords.Count + 1;
         EmploymentArchiveRecords.Add(record);
-        return CreatedAtAction(nameof(Get), new { id = record.Id }, record);
+        return CreatedAtAction(nameof(Get), new { id = record.RecordId }, record);
     }
 
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmploymentArchiveRecord updatedRecord)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.Id == id);
+        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
@@ -51,7 +51,7 @@ public class EmploymentArchiveRecordController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.Id == id);
+        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();

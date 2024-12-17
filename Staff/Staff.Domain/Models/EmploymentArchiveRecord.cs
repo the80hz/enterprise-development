@@ -6,6 +6,11 @@
 public class EmploymentArchiveRecord
 {
     /// <summary>
+    /// Идентификатор записи.
+    /// </summary>
+    public int RecordId { get; set; }
+
+    /// <summary>
     /// Дата начала работы на должности.
     /// </summary>
     public DateTime StartDate { get; set; }
