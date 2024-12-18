@@ -7,15 +7,10 @@ namespace Staff.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AddressController : ControllerBase
+public class AddressController(IMapper mapper) : ControllerBase
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
     private static readonly List<Address> Addresses = [];
-
-    public AddressController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
 
     [HttpGet]
     public IActionResult Get()

@@ -10,17 +10,11 @@ namespace Staff.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmployeeController : ControllerBase
+public class EmployeeController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
     private static readonly List<Employee> Employees = [];
-    private readonly StaffDbContext _context;
-
-    public EmployeeController(IMapper mapper, StaffDbContext context)
-    {
-        _mapper = mapper;
-        _context = context;
-    }
+    private readonly StaffDbContext _context = context;
 
     [HttpGet]
     public IActionResult Get()

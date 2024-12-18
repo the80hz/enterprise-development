@@ -7,15 +7,10 @@ namespace Staff.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UnionBenefitController : ControllerBase
+public class UnionBenefitController(IMapper mapper) : ControllerBase
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
     private static readonly List<UnionBenefit> UnionBenefits = [];
-
-    public UnionBenefitController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
 
     [HttpGet]
     public IActionResult Get()

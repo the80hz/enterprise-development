@@ -3,13 +3,8 @@ using Staff.Domain.Models;
 
 namespace Staff.Domain.Context;
 
-public class StaffDbContext : DbContext
+public class StaffDbContext(DbContextOptions<StaffDbContext> options) : DbContext(options)
 {
-    public StaffDbContext(DbContextOptions<StaffDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Employee> Employees => Set<Employee>();
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Position> Positions => Set<Position>();
@@ -20,8 +15,7 @@ public class StaffDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        if (modelBuilder == null)
-            throw new ArgumentNullException(nameof(modelBuilder));
+        ArgumentNullException.ThrowIfNull(modelBuilder);
 
         // Настройка связи многие-ко-многим между Employee и Department
         modelBuilder.Entity<Employee>()

@@ -7,15 +7,10 @@ namespace Staff.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class WorkshopController : ControllerBase
+public class WorkshopController(IMapper mapper) : ControllerBase
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
     private static readonly List<Workshop> Workshops = [];
-
-    public WorkshopController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
 
     [HttpGet]
     public IActionResult Get()
