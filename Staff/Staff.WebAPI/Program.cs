@@ -1,14 +1,18 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-
-using Staff.WebAPI.Mapping;
 using Staff.Domain.Context;
+using Staff.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Добавляем контекст базы данных
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' is not found.");
+}
+
 builder.Services.AddDbContext<StaffDbContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySQL(connectionString));
 
 // Add services to the container.
 

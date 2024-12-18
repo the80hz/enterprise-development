@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class DepartmentRepository : IRepository<Department>
 {
-    private readonly List<Department> _departments = new();
+    private readonly List<Department> _departments = [];
 
     /// <summary>
     /// Получает все отделы.

@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class PositionRepository : IRepository<Position>
 {
-    private readonly List<Position> _positions = new();
+    private readonly List<Position> _positions = [];
 
     /// <summary>
     /// Получает все должности.

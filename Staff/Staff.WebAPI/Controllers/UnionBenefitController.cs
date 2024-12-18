@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
 
@@ -10,7 +10,7 @@ namespace Staff.WebAPI.Controllers;
 public class UnionBenefitController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private static readonly List<UnionBenefit> UnionBenefits = new();
+    private static readonly List<UnionBenefit> UnionBenefits = [];
 
     public UnionBenefitController(IMapper mapper)
     {

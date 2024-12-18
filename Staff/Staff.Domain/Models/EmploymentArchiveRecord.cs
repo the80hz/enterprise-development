@@ -24,4 +24,8 @@ public class EmploymentArchiveRecord
     /// Должность, на которой работал сотрудник.
     /// </summary>
     public required Position Position { get; set; }
+
+    /// <summary>
+    /// Сотрудник, работавший на должности.
+    public required Employee Employee { get; set; }
 }

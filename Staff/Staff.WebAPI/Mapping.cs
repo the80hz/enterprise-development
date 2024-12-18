@@ -2,7 +2,7 @@ using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
 
-namespace Staff.WebAPI.Mapping;
+namespace Staff.WebAPI;
 
 public class MappingProfile : Profile
 {

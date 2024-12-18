@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using Staff.Domain.Models;
-using Staff.WebAPI.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Staff.Domain.Context;
 using Staff.Domain.Enums;
+using Staff.Domain.Models;
+using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -13,7 +13,7 @@ namespace Staff.WebAPI.Controllers;
 public class EmployeeController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private static readonly List<Employee> Employees = new();
+    private static readonly List<Employee> Employees = [];
     private readonly StaffDbContext _context;
 
     public EmployeeController(IMapper mapper, StaffDbContext context)

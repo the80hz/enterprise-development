@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class EmployeeRepository : IRepository<Employee>
 {
-    private readonly List<Employee> _employees = new();
+    private readonly List<Employee> _employees = [];
 
     /// <summary>
     /// Получает всех сотрудников.

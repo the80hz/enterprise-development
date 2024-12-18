@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class AddressRepository : IRepository<Address>
 {
-    private readonly List<Address> _addresses = new();
+    private readonly List<Address> _addresses = [];
 
     /// <summary>
     /// Получает все адреса.

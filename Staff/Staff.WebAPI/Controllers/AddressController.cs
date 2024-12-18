@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
 
@@ -10,7 +10,7 @@ namespace Staff.WebAPI.Controllers;
 public class AddressController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private static readonly List<Address> Addresses = new();
+    private static readonly List<Address> Addresses = [];
 
     public AddressController(IMapper mapper)
     {

@@ -1,7 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Staff.Domain.Context;
-using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
 
@@ -87,7 +87,7 @@ public class DepartmentController : ControllerBase
         var result = departments.Select(d => new
         {
             DepartmentName = d.Name,
-            AverageAge = d.Employees.Any()
+            AverageAge = d.Employees.Count > 0
                 ? d.Employees.Average(e => (DateTime.Now - e.DateOfBirth).Days / 365.25)
                 : 0
         })

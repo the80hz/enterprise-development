@@ -45,7 +45,7 @@ public class Employee
     /// <summary>
     /// Отделы, в которых числится сотрудник.
     /// </summary>
-    public List<Department> Departments { get; set; } = new();
+    public List<Department> Departments { get; set; } = [];
 
     /// <summary>
     /// Идентификатор цеха, в котором работает сотрудник.

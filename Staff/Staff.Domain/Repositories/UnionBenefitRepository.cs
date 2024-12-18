@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class UnionBenefitRepository : IRepository<UnionBenefit>
 {
-    private readonly List<UnionBenefit> _unionBenefits = new();
+    private readonly List<UnionBenefit> _unionBenefits = [];
 
     /// <summary>
     /// Получает все льготные профсоюзные путевки.

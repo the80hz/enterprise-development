@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class EmploymentArchiveRecordRepository : IRepository<EmploymentArchiveRecord>
 {
-    private readonly List<EmploymentArchiveRecord> _records = new();
+    private readonly List<EmploymentArchiveRecord> _records = [];
 
     /// <summary>
     /// Получает все записи архива трудовой деятельности.

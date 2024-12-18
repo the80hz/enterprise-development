@@ -1,7 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Staff.Domain.Context;
-using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
 
@@ -13,7 +13,7 @@ public class EmploymentArchiveRecordController : ControllerBase
 {
     private readonly StaffDbContext _context;
     private readonly IMapper _mapper;
-    private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = new();
+    private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = [];
 
     public EmploymentArchiveRecordController(StaffDbContext context, IMapper mapper)
     {

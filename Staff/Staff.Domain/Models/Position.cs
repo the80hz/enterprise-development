@@ -18,5 +18,5 @@ public class Position
     /// <summary>
     /// Сотрудники, занимающие должность.
     /// </summary>
-    public List<Employee> Employees { get; set; } = new();
+    public List<Employee> Employees { get; set; } = [];
 }

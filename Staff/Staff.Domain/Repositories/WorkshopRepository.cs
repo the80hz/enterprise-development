@@ -8,7 +8,7 @@ namespace Staff.Domain.Repositories;
 /// </summary>
 public class WorkshopRepository : IRepository<Workshop>
 {
-    private readonly List<Workshop> _workshops = new();
+    private readonly List<Workshop> _workshops = [];
 
     /// <summary>
     /// Получает все цехи.

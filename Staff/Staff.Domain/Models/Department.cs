@@ -18,5 +18,5 @@ public class Department
     /// <summary>
     /// Сотрудники, числящиеся в отделе.
     /// </summary>
-    public List<Employee> Employees { get; set; } = new();
+    public List<Employee> Employees { get; set; } = [];
 }
