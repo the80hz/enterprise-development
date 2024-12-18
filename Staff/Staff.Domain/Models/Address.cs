@@ -38,5 +38,5 @@ public class Address
     /// <summary>
     /// Сотрудник, проживающий по данному адресу.
     /// </summary>
-    public required Employee Employee { get; set; }
+    public Employee? Employee { get; set; }
 }
