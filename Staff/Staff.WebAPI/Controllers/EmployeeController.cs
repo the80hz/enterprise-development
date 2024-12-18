@@ -124,7 +124,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> GetTop5EmployeesWithLongestTenure()
     {
         var employees = await _context.Employees
-            .OrderBy(e => e.DateOfHire)
+            .OrderByDescending(e => e.DateOfHire)
             .Take(5)
             .ToListAsync();
 

@@ -4,7 +4,7 @@ using Staff.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем контекст базы данных
+// Add configuration for MySQL database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -21,10 +21,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Добавляем AutoMapper
+// Add AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<StaffDbContext>();
+    context.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
