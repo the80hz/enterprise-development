@@ -5,13 +5,26 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с адресами сотрудников.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AddressController(IMapper mapper) : ControllerBase
 {
+    /// <summary>
+    /// Маппер для преобразования моделей в DTO и обратно.
+    /// </summary>
     private readonly IMapper _mapper = mapper;
+    /// <summary>
+    /// Список адресов сотрудников.
+    /// </summary>
     private static readonly List<Address> Addresses = [];
 
+    /// <summary>
+    /// Получает все адреса сотрудников.
+    /// </summary>
+    /// <returns>Список адресов сотрудников.</returns>
     [HttpGet]
     public IActionResult Get()
     {
@@ -19,6 +32,11 @@ public class AddressController(IMapper mapper) : ControllerBase
         return Ok(dtos);
     }
 
+    /// <summary>
+    /// Получает адрес сотрудника по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор адреса.</param>
+    /// <returns>Адрес сотрудника.</returns>
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
@@ -31,6 +49,11 @@ public class AddressController(IMapper mapper) : ControllerBase
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Добавляет новый адрес сотрудника.
+    /// </summary>
+    /// <param name="dto">DTO нового адреса.</param>
+    /// <returns>Результат добавления нового адреса.</returns>
     [HttpPost]
     public IActionResult Post([FromBody] AddressDto dto)
     {
@@ -41,6 +64,12 @@ public class AddressController(IMapper mapper) : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = address.AddressId }, createdDto);
     }
 
+    /// <summary>
+    /// Обновляет существующий адрес сотрудника.
+    /// </summary>
+    /// <param name="id">Идентификатор адреса для обновления.</param>
+    /// <param name="updatedDto">DTO с обновленными данными адреса.</param>
+    /// <returns>Результат обновления адреса.</returns>
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] AddressDto updatedDto)
     {
@@ -53,6 +82,11 @@ public class AddressController(IMapper mapper) : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Удаляет адрес сотрудника по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор адреса для удаления.</param>
+    /// <returns>Результат удаления адреса.</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

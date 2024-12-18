@@ -5,6 +5,9 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с профсоюзными льготами.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class UnionBenefitController(IMapper mapper) : ControllerBase
@@ -12,6 +15,10 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     private readonly IMapper _mapper = mapper;
     private static readonly List<UnionBenefit> UnionBenefits = [];
 
+    /// <summary>
+    /// Получает список всех профсоюзных льгот.
+    /// </summary>
+    /// <returns>Список льгот.</returns>
     [HttpGet]
     public IActionResult Get()
     {
@@ -19,6 +26,11 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
         return Ok(dtos);
     }
 
+    /// <summary>
+    /// Получает льготу по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор льготы.</param>
+    /// <returns>Информация о льготе.</returns>
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
@@ -31,6 +43,11 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Добавляет новую льготу.
+    /// </summary>
+    /// <param name="dto">DTO новой льготы.</param>
+    /// <returns>Результат создания льготы.</returns>
     [HttpPost]
     public IActionResult Post([FromBody] UnionBenefitDto dto)
     {
@@ -41,6 +58,12 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = unionBenefit.UnionBenefitId }, createdDto);
     }
 
+    /// <summary>
+    /// Обновляет информацию о льготе.
+    /// </summary>
+    /// <param name="id">Идентификатор льготы.</param>
+    /// <param name="updatedDto">Обновленные данные льготы.</param>
+    /// <returns>Результат обновления.</returns>
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] UnionBenefitDto updatedDto)
     {
@@ -53,6 +76,11 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Удаляет льготу.
+    /// </summary>
+    /// <param name="id">Идентификатор льготы.</param>
+    /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

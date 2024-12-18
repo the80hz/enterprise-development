@@ -7,6 +7,9 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с архивными записями о трудоустройстве.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class EmploymentArchiveRecordController(StaffDbContext context, IMapper mapper) : ControllerBase
@@ -15,6 +18,10 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     private readonly IMapper _mapper = mapper;
     private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = [];
 
+    /// <summary>
+    /// Получает список всех архивных записей.
+    /// </summary>
+    /// <returns>Список архивных записей.</returns>
     [HttpGet]
     public IActionResult Get()
     {
@@ -22,6 +29,11 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
         return Ok(dtos);
     }
 
+    /// <summary>
+    /// Получает архивную запись по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор записи.</param>
+    /// <returns>Информация об архивной записи.</returns>
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
@@ -34,6 +46,11 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Добавляет новую архивную запись.
+    /// </summary>
+    /// <param name="dto">DTO новой архивной записи.</param>
+    /// <returns>Результат создания записи.</returns>
     [HttpPost]
     public IActionResult Post([FromBody] EmploymentArchiveRecordDto dto)
     {
@@ -44,6 +61,12 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
         return CreatedAtAction(nameof(Get), new { id = record.RecordId }, createdDto);
     }
 
+    /// <summary>
+    /// Обновляет информацию об архивной записи.
+    /// </summary>
+    /// <param name="id">Идентификатор записи.</param>
+    /// <param name="updatedDto">Обновленные данные записи.</param>
+    /// <returns>Результат обновления.</returns>
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmploymentArchiveRecordDto updatedDto)
     {
@@ -56,6 +79,11 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
         return NoContent();
     }
 
+    /// <summary>
+    /// Удаляет архивную запись.
+    /// </summary>
+    /// <param name="id">Идентификатор записи.</param>
+    /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -68,7 +96,10 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
         return NoContent();
     }
 
-    // Аналитический запрос 3: Получить архив увольнений
+    /// <summary>
+    /// Получает архив увольнений сотрудников.
+    /// </summary>
+    /// <returns>Список записей об увольнениях.</returns>
     [HttpGet("TerminationArchive")]
     public async Task<IActionResult> GetTerminationArchive()
     {

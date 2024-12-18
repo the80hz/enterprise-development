@@ -8,6 +8,9 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с сотрудниками.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeeController(IMapper mapper, StaffDbContext context) : ControllerBase
@@ -16,6 +19,10 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     private static readonly List<Employee> Employees = [];
     private readonly StaffDbContext _context = context;
 
+    /// <summary>
+    /// Получает список всех сотрудников.
+    /// </summary>
+    /// <returns>Список сотрудников.</returns>
     [HttpGet]
     public IActionResult Get()
     {
@@ -23,6 +30,11 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return Ok(employeeDtos);
     }
 
+    /// <summary>
+    /// Получает сотрудника по идентификатору.
+    /// </summary>
+    /// <param name="id">Регистрационный номер сотрудника.</param>
+    /// <returns>Информация о сотруднике.</returns>
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
@@ -35,6 +47,11 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return Ok(employeeDto);
     }
 
+    /// <summary>
+    /// Добавляет нового сотрудника.
+    /// </summary>
+    /// <param name="employeeDto">DTO нового сотрудника.</param>
+    /// <returns>Результат создания сотрудника.</returns>
     [HttpPost]
     public IActionResult Post([FromBody] EmployeeDto employeeDto)
     {
@@ -45,6 +62,12 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return CreatedAtAction(nameof(Get), new { id = employee.RegistrationNumber }, createdDto);
     }
 
+    /// <summary>
+    /// Обновляет информацию о сотруднике.
+    /// </summary>
+    /// <param name="id">Регистрационный номер сотрудника.</param>
+    /// <param name="updatedEmployeeDto">Обновленные данные сотрудника.</param>
+    /// <returns>Результат обновления.</returns>
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmployeeDto updatedEmployeeDto)
     {
@@ -57,6 +80,11 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return NoContent();
     }
 
+    /// <summary>
+    /// Удаляет сотрудника.
+    /// </summary>
+    /// <param name="id">Регистрационный номер сотрудника.</param>
+    /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -69,6 +97,11 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return NoContent();
     }
 
+    /// <summary>
+    /// Получает сотрудников по идентификатору отдела.
+    /// </summary>
+    /// <param name="departmentId">Идентификатор отдела.</param>
+    /// <returns>Список сотрудников.</returns>
     [HttpGet("ByDepartment/{departmentId}")]
     public async Task<IActionResult> GetByDepartment(int departmentId)
     {
@@ -78,7 +111,10 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return Ok(employees);
     }
 
-    // Аналитический запрос 2: Получить сотрудников, работающих в нескольких отделах, упорядоченных по ФИО
+    /// <summary>
+    /// Получает сотрудников, работающих в нескольких отделах, упорядоченных по ФИО.
+    /// </summary>
+    /// <returns>Список сотрудников.</returns>
     [HttpGet("MultiDepartmentEmployees")]
     public async Task<IActionResult> GetEmployeesInMultipleDepartments()
     {
@@ -94,7 +130,11 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return Ok(employeeDtos);
     }
 
-    // Аналитический запрос 5: Получить сотрудников, получавших льготные профсоюзные путевки в прошлом году определенного вида
+    /// <summary>
+    /// Получает сотрудников, получавших льготные профсоюзные путевки в прошлом году определенного вида.
+    /// </summary>
+    /// <param name="benefitType">Тип льготы.</param>
+    /// <returns>Список сотрудников.</returns>
     [HttpGet("UnionBenefitsLastYear")]
     public async Task<IActionResult> GetEmployeesWithUnionBenefitsLastYear([FromQuery] BenefitType? benefitType)
     {
@@ -113,7 +153,10 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
         return Ok(employeeDtos);
     }
 
-    // Аналитический запрос 6: Получить топ 5 сотрудников с наибольшим стажем работы
+    /// <summary>
+    /// Получает топ 5 сотрудников с наибольшим стажем работы.
+    /// </summary>
+    /// <returns>Список сотрудников.</returns>
     [HttpGet("Top5LongestTenure")]
     public async Task<IActionResult> GetTop5EmployeesWithLongestTenure()
     {

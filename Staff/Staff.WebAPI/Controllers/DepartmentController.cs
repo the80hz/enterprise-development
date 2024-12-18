@@ -7,6 +7,9 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с отделами.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class DepartmentController(StaffDbContext context, IMapper mapper) : ControllerBase
@@ -14,6 +17,10 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
     private readonly StaffDbContext _context = context;
     private readonly IMapper _mapper = mapper;
 
+    /// <summary>
+    /// Получает список всех отделов.
+    /// </summary>
+    /// <returns>Список отделов.</returns>
     [HttpGet]
     public IActionResult Get()
     {
@@ -22,6 +29,11 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
         return Ok(dtos);
     }
 
+    /// <summary>
+    /// Получает отдел по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор отдела.</param>
+    /// <returns>Информация об отделе.</returns>
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
@@ -34,6 +46,11 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Создает новый отдел.
+    /// </summary>
+    /// <param name="dto">DTO нового отдела.</param>
+    /// <returns>Результат создания отдела.</returns>
     [HttpPost]
     public IActionResult Post([FromBody] DepartmentDto dto)
     {
@@ -44,6 +61,12 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
         return CreatedAtAction(nameof(Get), new { id = department.DepartmentId }, createdDto);
     }
 
+    /// <summary>
+    /// Обновляет информацию об отделе.
+    /// </summary>
+    /// <param name="id">Идентификатор отдела.</param>
+    /// <param name="updatedDto">Обновленные данные отдела.</param>
+    /// <returns>Результат обновления.</returns>
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] DepartmentDto updatedDto)
     {
@@ -57,6 +80,11 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
         return NoContent();
     }
 
+    /// <summary>
+    /// Удаляет отдел.
+    /// </summary>
+    /// <param name="id">Идентификатор отдела.</param>
+    /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -70,7 +98,10 @@ public class DepartmentController(StaffDbContext context, IMapper mapper) : Cont
         return NoContent();
     }
 
-    // Аналитический запрос 4: Получить средний возраст сотрудников в каждом отделе
+    /// <summary>
+    /// Получает средний возраст сотрудников по отделам.
+    /// </summary>
+    /// <returns>Список отделов со средним возрастом сотрудников.</returns>
     [HttpGet("AverageAge")]
     public async Task<IActionResult> GetAverageAgeByDepartment()
     {
