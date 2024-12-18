@@ -45,7 +45,12 @@ public class Employee
     /// <summary>
     /// Отделы, в которых числится сотрудник.
     /// </summary>
-    public List<Department> Departments { get; set; } = [];
+    public List<Department> Departments { get; set; } = new();
+
+    /// <summary>
+    /// Идентификатор цеха, в котором работает сотрудник.
+    /// </summary>
+    public int WorkshopId { get; set; }
 
     /// <summary>
     /// Цех, в котором работает сотрудник.
@@ -53,9 +58,19 @@ public class Employee
     public required Workshop Workshop { get; set; }
 
     /// <summary>
+    /// Идентификатор должности сотрудника.
+    /// </summary>
+    public int PositionId { get; set; }
+
+    /// <summary>
     /// Должность, занимаемая сотрудником.
     /// </summary>
     public required Position Position { get; set; }
+
+    /// <summary>
+    /// Идентификатор домашнего адреса сотрудника.
+    /// </summary>
+    public int AddressId { get; set; }
 
     /// <summary>
     /// Домашний адрес сотрудника.

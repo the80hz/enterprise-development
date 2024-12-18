@@ -23,14 +23,15 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<DepartmentDto>>(Departments);
+        var departments = _context.Departments.ToList();
+        var dtos = _mapper.Map<List<DepartmentDto>>(departments);
         return Ok(dtos);
     }
 
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var department = Departments.FirstOrDefault(d => d.DepartmentId == id);
+        var department = _context.Departments.FirstOrDefault(d => d.DepartmentId == id);
         if (department == null)
         {
             return NotFound();
@@ -43,8 +44,8 @@ public class DepartmentController : ControllerBase
     public IActionResult Post([FromBody] DepartmentDto dto)
     {
         var department = _mapper.Map<Department>(dto);
-        department.DepartmentId = Departments.Count + 1;
-        Departments.Add(department);
+        _context.Departments.Add(department);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<DepartmentDto>(department);
         return CreatedAtAction(nameof(Get), new { id = department.DepartmentId }, createdDto);
     }
@@ -52,24 +53,26 @@ public class DepartmentController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] DepartmentDto updatedDto)
     {
-        var department = Departments.FirstOrDefault(d => d.DepartmentId == id);
+        var department = _context.Departments.FirstOrDefault(d => d.DepartmentId == id);
         if (department == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, department);
+        _context.SaveChanges();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var department = Departments.FirstOrDefault(d => d.DepartmentId == id);
+        var department = _context.Departments.FirstOrDefault(d => d.DepartmentId == id);
         if (department == null)
         {
             return NotFound();
         }
-        Departments.Remove(department);
+        _context.Departments.Remove(department);
+        _context.SaveChanges();
         return NoContent();
     }
 

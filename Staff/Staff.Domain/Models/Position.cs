@@ -14,4 +14,9 @@ public class Position
     /// Название должности.
     /// </summary>
     public required string Title { get; set; }
+
+    /// <summary>
+    /// Сотрудники, занимающие должность.
+    /// </summary>
+    public List<Employee> Employees { get; set; } = new();
 }

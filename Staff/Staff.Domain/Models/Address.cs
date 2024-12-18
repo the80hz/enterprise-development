@@ -34,4 +34,9 @@ public class Address
     /// Страна.
     /// </summary>
     public required string Country { get; set; }
+
+    /// <summary>
+    /// Сотрудник, проживающий по данному адресу.
+    /// </summary>
+    public Employee Employee { get; set; }
 }

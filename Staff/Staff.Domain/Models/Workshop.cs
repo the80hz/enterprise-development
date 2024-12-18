@@ -14,4 +14,9 @@ public class Workshop
     /// Название цеха.
     /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Отделы, входящие в цех.
+    /// </summary>
+    public List<Employee> Employees { get; set; } = new();
 }

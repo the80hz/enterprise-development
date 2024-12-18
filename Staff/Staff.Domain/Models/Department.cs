@@ -14,4 +14,9 @@ public class Department
     /// Название отдела.
     /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Сотрудники, числящиеся в отделе.
+    /// </summary>
+    public List<Employee> Employees { get; set; } = new();
 }
