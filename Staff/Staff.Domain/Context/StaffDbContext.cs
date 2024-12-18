@@ -5,6 +5,10 @@ namespace Staff.Domain.Context;
 
 public class StaffDbContext : DbContext
 {
+    public StaffDbContext(DbContextOptions<StaffDbContext> options)
+            : base(options)
+    {
+    }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Position> Positions { get; set; }
