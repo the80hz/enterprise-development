@@ -4,8 +4,14 @@ using Staff.WebAPI.Dto;
 
 namespace Staff.WebAPI;
 
+/// <summary>
+/// Класс для настройки маппинга между моделями и DTO.
+/// </summary>
 public class MappingProfile : Profile
 {
+    /// <summary>
+    /// Конструктор класса.
+    /// </summary>
     public MappingProfile()
     {
         CreateMap<Employee, EmployeeDto>().ReverseMap();
