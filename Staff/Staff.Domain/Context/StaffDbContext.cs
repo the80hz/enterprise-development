@@ -42,6 +42,27 @@ public class StaffDbContext : DbContext
             .WithOne(a => a.Employee)
             .HasForeignKey<Employee>(e => e.AddressId);
 
+        modelBuilder.Entity<Employee>()
+            .HasKey(e => e.RegistrationNumber);
+
+        modelBuilder.Entity<Department>()
+            .HasKey(d => d.DepartmentId);
+
+        modelBuilder.Entity<Position>()
+            .HasKey(p => p.PositionId);
+
+        modelBuilder.Entity<Workshop>()
+            .HasKey(w => w.WorkshopId);
+
+        modelBuilder.Entity<EmploymentArchiveRecord>()
+            .HasKey(r => r.RecordId);
+
+        modelBuilder.Entity<UnionBenefit>()
+            .HasKey(u => u.UnionBenefitId);
+
+        modelBuilder.Entity<Address>()
+            .HasKey(a => a.AddressId);
+
         base.OnModelCreating(modelBuilder);
     }
 }
