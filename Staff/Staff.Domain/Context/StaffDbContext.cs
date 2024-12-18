@@ -3,16 +3,51 @@ using Staff.Domain.Models;
 
 namespace Staff.Domain.Context;
 
-public class StaffDbContext(DbContextOptions<StaffDbContext> options) : DbContext(options)
+/// <summary>
+/// Представляет контекст базы данных для хранения сотрудников предприятия.
+/// </summary>
+/// <param name="options"></param>
+public class StaffDbContext : DbContext
 {
+    public StaffDbContext(DbContextOptions<StaffDbContext> options)
+        : base(options)
+    {
+        Database.EnsureCreated();
+    }
+
+    /// <summary>
+    /// Сотрудники предприятия.
+    /// </summary>
     public DbSet<Employee> Employees => Set<Employee>();
+    /// <summary>
+    /// Отделы предприятия.
+    /// </summary>
     public DbSet<Department> Departments => Set<Department>();
+    /// <summary>
+    /// Должности на предприятии.
+    /// </summary>
     public DbSet<Position> Positions => Set<Position>();
+    /// <summary>
+    /// Цеха предприятия.
+    /// </summary>
     public DbSet<Workshop> Workshops => Set<Workshop>();
+    /// <summary>
+    /// Архивные записи о трудоустройстве сотрудников.
+    /// </summary>
     public DbSet<EmploymentArchiveRecord> EmploymentArchiveRecords => Set<EmploymentArchiveRecord>();
+    /// <summary>
+    /// Льготы профсоюза.
+    /// </summary>
     public DbSet<UnionBenefit> UnionBenefits => Set<UnionBenefit>();
+    /// <summary>
+    /// Адреса сотрудников.
+    /// </summary>
     public DbSet<Address> Addresses => Set<Address>();
 
+    /// <summary>
+    /// Настраивает модель данных.
+    /// </summary>
+    /// <param name="modelBuilder">Построитель модели данных.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
