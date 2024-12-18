@@ -9,17 +9,11 @@ namespace Staff.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmploymentArchiveRecordController : ControllerBase
+public class EmploymentArchiveRecordController(StaffDbContext context, IMapper mapper) : ControllerBase
 {
-    private readonly StaffDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly StaffDbContext _context = context;
+    private readonly IMapper _mapper = mapper;
     private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = [];
-
-    public EmploymentArchiveRecordController(StaffDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
 
     [HttpGet]
     public IActionResult Get()
@@ -80,15 +74,15 @@ public class EmploymentArchiveRecordController : ControllerBase
     {
         var records = await _context.EmploymentArchiveRecords
             .Include(ea => ea.Employee)
-                .ThenInclude(e => e.Workshop)
+                .ThenInclude(e => e!.Workshop)
             .Include(ea => ea.Employee)
-                .ThenInclude(e => e.Departments)
+                .ThenInclude(e => e!.Departments)
             .Include(ea => ea.Employee)
-                .ThenInclude(e => e.Position)
-            .Where(ea => ea.EndDate != null)
+                .ThenInclude(e => e!.Position)
+            .Where(ea => ea.EndDate != null && ea.Employee != null)
             .Select(ea => new
             {
-                ea.Employee.RegistrationNumber,
+                ea.Employee!.RegistrationNumber,
                 FullName = $"{ea.Employee.Surname} {ea.Employee.Name} {ea.Employee.Patronymic}",
                 ea.Employee.DateOfBirth,
                 WorkshopName = ea.Employee.Workshop.Name,
