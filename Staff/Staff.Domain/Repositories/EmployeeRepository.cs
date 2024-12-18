@@ -10,16 +10,31 @@ public class EmployeeRepository : IRepository<Employee>
 {
     private readonly List<Employee> _employees = new();
 
+    /// <summary>
+    /// Получает всех сотрудников.
+    /// </summary>
     public IEnumerable<Employee> GetAll() => _employees;
 
+    /// <summary>
+    /// Получает сотрудника по регистрационному номеру.
+    /// </summary>
+    /// <param name="id">Регистрационный номер сотрудника.</param>
     public Employee? GetById(int id) => _employees.Find(e => e.RegistrationNumber == id);
 
+    /// <summary>
+    /// Добавляет нового сотрудника.
+    /// </summary>
+    /// <param name="entity">Новый сотрудник для добавления.</param>
     public Employee? Post(Employee entity)
     {
         _employees.Add(entity);
         return entity;
     }
 
+    /// <summary>
+    /// Обновляет информацию о сотруднике.
+    /// </summary>
+    /// <param name="entity">Обновленные данные сотрудника.</param>
     public bool Put(Employee entity)
     {
         var existingEmployee = GetById(entity.RegistrationNumber);
@@ -47,6 +62,10 @@ public class EmployeeRepository : IRepository<Employee>
         return true;
     }
 
+    /// <summary>
+    /// Удаляет сотрудника по регистрационному номеру.
+    /// </summary>
+    /// <param name="id">Регистрационный номер сотрудника для удаления.</param>
     public bool Delete(int id)
     {
         var employee = GetById(id);

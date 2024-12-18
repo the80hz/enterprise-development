@@ -10,16 +10,31 @@ public class PositionRepository : IRepository<Position>
 {
     private readonly List<Position> _positions = new();
 
+    /// <summary>
+    /// Получает все должности.
+    /// </summary>
     public IEnumerable<Position> GetAll() => _positions;
 
+    /// <summary>
+    /// Получает должность по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор должности.</param>
     public Position? GetById(int id) => _positions.Find(p => p.PositionId == id);
 
+    /// <summary>
+    /// Добавляет новую должность.
+    /// </summary>
+    /// <param name="entity">Новая должность для добавления.</param>
     public Position? Post(Position entity)
     {
         _positions.Add(entity);
         return entity;
     }
 
+    /// <summary>
+    /// Обновляет информацию о должности.
+    /// </summary>
+    /// <param name="entity">Обновленные данные должности.</param>
     public bool Put(Position entity)
     {
         var existingPosition = GetById(entity.PositionId);
@@ -30,6 +45,10 @@ public class PositionRepository : IRepository<Position>
         return true;
     }
 
+    /// <summary>
+    /// Удаляет должность по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор должности для удаления.</param>
     public bool Delete(int id)
     {
         var position = GetById(id);
