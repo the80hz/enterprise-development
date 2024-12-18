@@ -1,7 +1,14 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+
 using Staff.WebAPI.Mapping;
+using Staff.Domain.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Добавляем контекст базы данных
+builder.Services.AddDbContext<StaffDbContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 

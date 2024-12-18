@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Staff.Domain.Context;
 using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
@@ -9,11 +11,12 @@ namespace Staff.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class DepartmentController : ControllerBase
 {
+    private readonly StaffDbContext _context;
     private readonly IMapper _mapper;
-    private static readonly List<Department> Departments = new();
 
-    public DepartmentController(IMapper mapper)
+    public DepartmentController(StaffDbContext context, IMapper mapper)
     {
+        _context = context;
         _mapper = mapper;
     }
 
@@ -68,5 +71,25 @@ public class DepartmentController : ControllerBase
         }
         Departments.Remove(department);
         return NoContent();
+    }
+
+    // Аналитический запрос 4: Получить средний возраст сотрудников в каждом отделе
+    [HttpGet("AverageAge")]
+    public async Task<IActionResult> GetAverageAgeByDepartment()
+    {
+        var departments = await _context.Departments
+            .Include(d => d.Employees)
+            .ToListAsync();
+
+        var result = departments.Select(d => new
+        {
+            DepartmentName = d.Name,
+            AverageAge = d.Employees.Any()
+                ? d.Employees.Average(e => (DateTime.Now - e.DateOfBirth).Days / 365.25)
+                : 0
+        })
+        .ToList();
+
+        return Ok(result);
     }
 }

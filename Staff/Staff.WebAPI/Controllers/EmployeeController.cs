@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
+using Microsoft.EntityFrameworkCore;
+using Staff.Domain.Context;
+using Staff.Domain.Enums;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -11,10 +14,12 @@ public class EmployeeController : ControllerBase
 {
     private readonly IMapper _mapper;
     private static readonly List<Employee> Employees = new();
+    private readonly StaffDbContext _context;
 
-    public EmployeeController(IMapper mapper)
+    public EmployeeController(IMapper mapper, StaffDbContext context)
     {
         _mapper = mapper;
+        _context = context;
     }
 
     [HttpGet]
@@ -68,5 +73,62 @@ public class EmployeeController : ControllerBase
         }
         Employees.Remove(employee);
         return NoContent();
+    }
+
+    [HttpGet("ByDepartment/{departmentId}")]
+    public async Task<IActionResult> GetByDepartment(int departmentId)
+    {
+        var employees = await _context.Employees
+            .Where(e => e.Departments.Any(d => d.DepartmentId == departmentId))
+            .ToListAsync();
+        return Ok(employees);
+    }
+
+    // Аналитический запрос 2: Получить сотрудников, работающих в нескольких отделах, упорядоченных по ФИО
+    [HttpGet("MultiDepartmentEmployees")]
+    public async Task<IActionResult> GetEmployeesInMultipleDepartments()
+    {
+        var employees = await _context.Employees
+            .Include(e => e.Departments)
+            .Where(e => e.Departments.Count > 1)
+            .OrderBy(e => e.Surname)
+            .ThenBy(e => e.Name)
+            .ThenBy(e => e.Patronymic)
+            .ToListAsync();
+
+        var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+        return Ok(employeeDtos);
+    }
+
+    // Аналитический запрос 5: Получить сотрудников, получавших льготные профсоюзные путевки в прошлом году определенного вида
+    [HttpGet("UnionBenefitsLastYear")]
+    public async Task<IActionResult> GetEmployeesWithUnionBenefitsLastYear([FromQuery] BenefitType? benefitType)
+    {
+        var lastYear = DateTime.Now.Year - 1;
+        var query = _context.Employees
+            .Include(e => e.UnionBenefits)
+            .Where(e => e.UnionBenefits.Any(ub => ub.DateReceived.Year == lastYear));
+
+        if (benefitType.HasValue)
+        {
+            query = query.Where(e => e.UnionBenefits.Any(ub => ub.BenefitType == benefitType.Value));
+        }
+
+        var employees = await query.ToListAsync();
+        var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+        return Ok(employeeDtos);
+    }
+
+    // Аналитический запрос 6: Получить топ 5 сотрудников с наибольшим стажем работы
+    [HttpGet("Top5LongestTenure")]
+    public async Task<IActionResult> GetTop5EmployeesWithLongestTenure()
+    {
+        var employees = await _context.Employees
+            .OrderBy(e => e.DateOfHire)
+            .Take(5)
+            .ToListAsync();
+
+        var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+        return Ok(employeeDtos);
     }
 }

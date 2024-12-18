@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Staff.Domain.Context;
 using AutoMapper;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
@@ -9,11 +11,13 @@ namespace Staff.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class EmploymentArchiveRecordController : ControllerBase
 {
+    private readonly StaffDbContext _context;
     private readonly IMapper _mapper;
     private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = new();
 
-    public EmploymentArchiveRecordController(IMapper mapper)
+    public EmploymentArchiveRecordController(StaffDbContext context, IMapper mapper)
     {
+        _context = context;
         _mapper = mapper;
     }
 
@@ -68,5 +72,32 @@ public class EmploymentArchiveRecordController : ControllerBase
         }
         EmploymentArchiveRecords.Remove(record);
         return NoContent();
+    }
+
+    // Аналитический запрос 3: Получить архив увольнений
+    [HttpGet("TerminationArchive")]
+    public async Task<IActionResult> GetTerminationArchive()
+    {
+        var records = await _context.EmploymentArchiveRecords
+            .Include(ea => ea.Employee)
+                .ThenInclude(e => e.Workshop)
+            .Include(ea => ea.Employee)
+                .ThenInclude(e => e.Departments)
+            .Include(ea => ea.Employee)
+                .ThenInclude(e => e.Position)
+            .Where(ea => ea.EndDate != null)
+            .Select(ea => new
+            {
+                ea.Employee.RegistrationNumber,
+                FullName = $"{ea.Employee.Surname} {ea.Employee.Name} {ea.Employee.Patronymic}",
+                ea.Employee.DateOfBirth,
+                WorkshopName = ea.Employee.Workshop.Name,
+                Departments = ea.Employee.Departments.Select(d => d.Name).ToList(),
+                PositionTitle = ea.Employee.Position.Title,
+                TerminationDate = ea.EndDate
+            })
+            .ToListAsync();
+
+        return Ok(records);
     }
 }
