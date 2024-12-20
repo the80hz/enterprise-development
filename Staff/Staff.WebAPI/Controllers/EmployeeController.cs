@@ -16,7 +16,6 @@ namespace Staff.WebAPI.Controllers;
 public class EmployeeController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
     private readonly IMapper _mapper = mapper;
-    private static readonly List<Employee> Employees = [];
     private readonly StaffDbContext _context = context;
 
     /// <summary>
@@ -26,8 +25,9 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     [HttpGet]
     public IActionResult Get()
     {
-        var employeeDtos = _mapper.Map<List<EmployeeDto>>(Employees);
-        return Ok(employeeDtos);
+        var employees = _context.Employees.ToList();
+        var dtos = _mapper.Map<List<EmployeeDto>>(employees);
+        return Ok(dtos);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var employee = Employees.FirstOrDefault(e => e.RegistrationNumber == id);
+        var employee = _context.Employees.FirstOrDefault(e => e.RegistrationNumber == id);
         if (employee == null)
         {
             return NotFound();
@@ -56,8 +56,8 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     public IActionResult Post([FromBody] EmployeeDto employeeDto)
     {
         var employee = _mapper.Map<Employee>(employeeDto);
-        employee.RegistrationNumber = Employees.Count + 1;
-        Employees.Add(employee);
+        _context.Employees.Add(employee);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<EmployeeDto>(employee);
         return CreatedAtAction(nameof(Get), new { id = employee.RegistrationNumber }, createdDto);
     }
@@ -71,12 +71,13 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmployeeDto updatedEmployeeDto)
     {
-        var employee = Employees.FirstOrDefault(e => e.RegistrationNumber == id);
+        var employee = _context.Employees.FirstOrDefault(e => e.RegistrationNumber == id);
         if (employee == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedEmployeeDto, employee);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -88,12 +89,13 @@ public class EmployeeController(IMapper mapper, StaffDbContext context) : Contro
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var employee = Employees.FirstOrDefault(e => e.RegistrationNumber == id);
+        var employee = _context.Employees.FirstOrDefault(e => e.RegistrationNumber == id);
         if (employee == null)
         {
             return NotFound();
         }
-        Employees.Remove(employee);
+        _context.Employees.Remove(employee);
+        _context.SaveChanges();
         return NoContent();
     }
 

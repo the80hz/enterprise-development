@@ -16,7 +16,6 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
 {
     private readonly StaffDbContext _context = context;
     private readonly IMapper _mapper = mapper;
-    private static readonly List<EmploymentArchiveRecord> EmploymentArchiveRecords = [];
 
     /// <summary>
     /// Получает список всех архивных записей.
@@ -25,7 +24,8 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<EmploymentArchiveRecordDto>>(EmploymentArchiveRecords);
+        var records = _context.EmploymentArchiveRecords.ToList();
+        var dtos = _mapper.Map<List<EmploymentArchiveRecordDto>>(records);
         return Ok(dtos);
     }
 
@@ -37,7 +37,7 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
+        var record = _context.EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
@@ -55,8 +55,8 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     public IActionResult Post([FromBody] EmploymentArchiveRecordDto dto)
     {
         var record = _mapper.Map<EmploymentArchiveRecord>(dto);
-        record.RecordId = EmploymentArchiveRecords.Count + 1;
-        EmploymentArchiveRecords.Add(record);
+        _context.EmploymentArchiveRecords.Add(record);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<EmploymentArchiveRecordDto>(record);
         return CreatedAtAction(nameof(Get), new { id = record.RecordId }, createdDto);
     }
@@ -70,12 +70,13 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmploymentArchiveRecordDto updatedDto)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
+        var record = _context.EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, record);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -87,12 +88,13 @@ public class EmploymentArchiveRecordController(StaffDbContext context, IMapper m
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var record = EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
+        var record = _context.EmploymentArchiveRecords.FirstOrDefault(r => r.RecordId == id);
         if (record == null)
         {
             return NotFound();
         }
-        EmploymentArchiveRecords.Remove(record);
+        _context.EmploymentArchiveRecords.Remove(record);
+        _context.SaveChanges();
         return NoContent();
     }
 
