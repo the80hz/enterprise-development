@@ -6,7 +6,6 @@ namespace Staff.Domain.Context;
 /// <summary>
 /// Представляет контекст базы данных для хранения сотрудников предприятия.
 /// </summary>
-/// <param name="options"></param>
 public class StaffDbContext : DbContext
 {
     public StaffDbContext(DbContextOptions<StaffDbContext> options)

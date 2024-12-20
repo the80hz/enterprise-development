@@ -27,5 +27,6 @@ public class EmploymentArchiveRecord
 
     /// <summary>
     /// Сотрудник, работавший на должности.
+    /// </summary>
     public Employee? Employee { get; set; }
 }
