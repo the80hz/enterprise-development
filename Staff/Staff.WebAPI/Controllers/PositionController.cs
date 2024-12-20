@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
+using Staff.Domain.Context;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -10,10 +11,10 @@ namespace Staff.WebAPI.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class PositionController(IMapper mapper) : ControllerBase
+public class PositionController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
     private readonly IMapper _mapper = mapper;
-    private static readonly List<Position> Positions = [];
+    private readonly StaffDbContext _context = context;
 
     /// <summary>
     /// Получает список всех должностей.
@@ -22,7 +23,7 @@ public class PositionController(IMapper mapper) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<PositionDto>>(Positions);
+        var dtos = _mapper.Map<List<PositionDto>>(_context.Positions.ToList());
         return Ok(dtos);
     }
 
@@ -34,7 +35,7 @@ public class PositionController(IMapper mapper) : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var position = Positions.FirstOrDefault(p => p.PositionId == id);
+        var position = _context.Positions.FirstOrDefault(p => p.PositionId == id);
         if (position == null)
         {
             return NotFound();
@@ -52,8 +53,9 @@ public class PositionController(IMapper mapper) : ControllerBase
     public IActionResult Post([FromBody] PositionDto dto)
     {
         var position = _mapper.Map<Position>(dto);
-        position.PositionId = Positions.Count + 1;
-        Positions.Add(position);
+        position.PositionId = _context.Positions.Count() + 1;
+        _context.Positions.Add(position);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<PositionDto>(position);
         return CreatedAtAction(nameof(Get), new { id = position.PositionId }, createdDto);
     }
@@ -67,12 +69,13 @@ public class PositionController(IMapper mapper) : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] PositionDto updatedDto)
     {
-        var position = Positions.FirstOrDefault(p => p.PositionId == id);
+        var position = _context.Positions.FirstOrDefault(p => p.PositionId == id);
         if (position == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, position);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -84,12 +87,13 @@ public class PositionController(IMapper mapper) : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var position = Positions.FirstOrDefault(p => p.PositionId == id);
+        var position = _context.Positions.FirstOrDefault(p => p.PositionId == id);
         if (position == null)
         {
             return NotFound();
         }
-        Positions.Remove(position);
+        _context.Positions.Remove(position);
+        _context.SaveChanges();
         return NoContent();
     }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
+using Staff.Domain.Context;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -10,10 +11,10 @@ namespace Staff.WebAPI.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class WorkshopController(IMapper mapper) : ControllerBase
+public class WorkshopController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
     private readonly IMapper _mapper = mapper;
-    private static readonly List<Workshop> Workshops = [];
+    private readonly StaffDbContext _context = context;
 
     /// <summary>
     /// Получает список всех цехов.
@@ -22,7 +23,7 @@ public class WorkshopController(IMapper mapper) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<WorkshopDto>>(Workshops);
+        var dtos = _mapper.Map<List<WorkshopDto>>(_context.Workshops.ToList());
         return Ok(dtos);
     }
 
@@ -34,7 +35,7 @@ public class WorkshopController(IMapper mapper) : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var workshop = Workshops.FirstOrDefault(w => w.WorkshopId == id);
+        var workshop = _context.Workshops.FirstOrDefault(w => w.WorkshopId == id);
         if (workshop == null)
         {
             return NotFound();
@@ -52,8 +53,9 @@ public class WorkshopController(IMapper mapper) : ControllerBase
     public IActionResult Post([FromBody] WorkshopDto dto)
     {
         var workshop = _mapper.Map<Workshop>(dto);
-        workshop.WorkshopId = Workshops.Count + 1;
-        Workshops.Add(workshop);
+        workshop.WorkshopId = _context.Workshops.Count() + 1;
+        _context.Workshops.Add(workshop);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<WorkshopDto>(workshop);
         return CreatedAtAction(nameof(Get), new { id = workshop.WorkshopId }, createdDto);
     }
@@ -67,12 +69,13 @@ public class WorkshopController(IMapper mapper) : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] WorkshopDto updatedDto)
     {
-        var workshop = Workshops.FirstOrDefault(w => w.WorkshopId == id);
+        var workshop = _context.Workshops.FirstOrDefault(w => w.WorkshopId == id);
         if (workshop == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, workshop);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -84,12 +87,13 @@ public class WorkshopController(IMapper mapper) : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var workshop = Workshops.FirstOrDefault(w => w.WorkshopId == id);
+        var workshop = _context.Workshops.FirstOrDefault(w => w.WorkshopId == id);
         if (workshop == null)
         {
             return NotFound();
         }
-        Workshops.Remove(workshop);
+        _context.Workshops.Remove(workshop);
+        _context.SaveChanges();
         return NoContent();
     }
 }

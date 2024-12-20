@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
+using Staff.Domain.Context;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -10,16 +11,13 @@ namespace Staff.WebAPI.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class AddressController(IMapper mapper) : ControllerBase
+public class AddressController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
     /// <summary>
     /// Маппер для преобразования моделей в DTO и обратно.
     /// </summary>
     private readonly IMapper _mapper = mapper;
-    /// <summary>
-    /// Список адресов сотрудников.
-    /// </summary>
-    private static readonly List<Address> Addresses = [];
+    private readonly StaffDbContext _context = context;
 
     /// <summary>
     /// Получает все адреса сотрудников.
@@ -28,7 +26,7 @@ public class AddressController(IMapper mapper) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<AddressDto>>(Addresses);
+        var dtos = _mapper.Map<List<AddressDto>>(_context.Addresses.ToList());
         return Ok(dtos);
     }
 
@@ -40,7 +38,7 @@ public class AddressController(IMapper mapper) : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var address = Addresses.FirstOrDefault(a => a.AddressId == id);
+        var address = _context.Addresses.FirstOrDefault(a => a.AddressId == id);
         if (address == null)
         {
             return NotFound();
@@ -58,8 +56,9 @@ public class AddressController(IMapper mapper) : ControllerBase
     public IActionResult Post([FromBody] AddressDto dto)
     {
         var address = _mapper.Map<Address>(dto);
-        address.AddressId = Addresses.Count + 1;
-        Addresses.Add(address);
+        address.AddressId = _context.Addresses.Count() + 1;
+        _context.Addresses.Add(address);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<AddressDto>(address);
         return CreatedAtAction(nameof(Get), new { id = address.AddressId }, createdDto);
     }
@@ -73,12 +72,13 @@ public class AddressController(IMapper mapper) : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] AddressDto updatedDto)
     {
-        var address = Addresses.FirstOrDefault(a => a.AddressId == id);
+        var address = _context.Addresses.FirstOrDefault(a => a.AddressId == id);
         if (address == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, address);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -90,12 +90,13 @@ public class AddressController(IMapper mapper) : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var address = Addresses.FirstOrDefault(a => a.AddressId == id);
+        var address = _context.Addresses.FirstOrDefault(a => a.AddressId == id);
         if (address == null)
         {
             return NotFound();
         }
-        Addresses.Remove(address);
+        _context.Addresses.Remove(address);
+        _context.SaveChanges();
         return NoContent();
     }
 }

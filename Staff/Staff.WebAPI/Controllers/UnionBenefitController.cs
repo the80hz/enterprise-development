@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Staff.Domain.Models;
 using Staff.WebAPI.Dto;
+using Staff.Domain.Context;
 
 namespace Staff.WebAPI.Controllers;
 
@@ -10,10 +11,10 @@ namespace Staff.WebAPI.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class UnionBenefitController(IMapper mapper) : ControllerBase
+public class UnionBenefitController(IMapper mapper, StaffDbContext context) : ControllerBase
 {
     private readonly IMapper _mapper = mapper;
-    private static readonly List<UnionBenefit> UnionBenefits = [];
+    private readonly StaffDbContext _context = context;
 
     /// <summary>
     /// Получает список всех профсоюзных льгот.
@@ -22,7 +23,7 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var dtos = _mapper.Map<List<UnionBenefitDto>>(UnionBenefits);
+        var dtos = _mapper.Map<List<UnionBenefitDto>>(_context.UnionBenefits.ToList());
         return Ok(dtos);
     }
 
@@ -34,7 +35,7 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var unionBenefit = UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
+        var unionBenefit = _context.UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
         if (unionBenefit == null)
         {
             return NotFound();
@@ -52,8 +53,9 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     public IActionResult Post([FromBody] UnionBenefitDto dto)
     {
         var unionBenefit = _mapper.Map<UnionBenefit>(dto);
-        unionBenefit.UnionBenefitId = UnionBenefits.Count + 1;
-        UnionBenefits.Add(unionBenefit);
+        unionBenefit.UnionBenefitId = _context.UnionBenefits.Count() + 1;
+        _context.UnionBenefits.Add(unionBenefit);
+        _context.SaveChanges();
         var createdDto = _mapper.Map<UnionBenefitDto>(unionBenefit);
         return CreatedAtAction(nameof(Get), new { id = unionBenefit.UnionBenefitId }, createdDto);
     }
@@ -67,12 +69,13 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] UnionBenefitDto updatedDto)
     {
-        var unionBenefit = UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
+        var unionBenefit = _context.UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
         if (unionBenefit == null)
         {
             return NotFound();
         }
         _mapper.Map(updatedDto, unionBenefit);
+        _context.SaveChanges();
         return NoContent();
     }
 
@@ -84,12 +87,13 @@ public class UnionBenefitController(IMapper mapper) : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var unionBenefit = UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
+        var unionBenefit = _context.UnionBenefits.FirstOrDefault(ub => ub.UnionBenefitId == id);
         if (unionBenefit == null)
         {
             return NotFound();
         }
-        UnionBenefits.Remove(unionBenefit);
+        _context.UnionBenefits.Remove(unionBenefit);
+        _context.SaveChanges();
         return NoContent();
     }
 }
