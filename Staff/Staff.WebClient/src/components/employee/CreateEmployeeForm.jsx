@@ -37,18 +37,15 @@ export function CreateEmployeeForm({ onCreated }) {
     { unionBenefitId: '', benefitType: '', dateReceived: '' }
   ]);
 
+  // Добавляем состояния для имен сущностей
+  const [departmentNames, setDepartmentNames] = useState([]);
+  const [workshopName, setWorkshopName] = useState('');
+  const [positionTitle, setPositionTitle] = useState('');
+
   const formatDate = (dateString) => {
     if (!dateString) return null;
-    const date = new Date(dateString);
-    // Получаем текущее время
-    const now = new Date();
-    // Комбинируем дату из инпута со временем
-    date.setHours(now.getHours());
-    date.setMinutes(now.getMinutes());
-    date.setSeconds(now.getSeconds());
-    date.setMilliseconds(now.getMilliseconds());
-    return date.toISOString(); // Сохраняем 'Z' в конце
-  };  
+    return new Date(dateString).toISOString();
+  };
 
   const handleEmploymentArchiveChange = (index, field, value) => {
     const updatedArchive = [...employmentArchive]
@@ -91,20 +88,20 @@ export function CreateEmployeeForm({ onCreated }) {
         dateOfBirth: formatDate(dateOfBirth),
         gender: Number(gender),
         dateOfHire: formatDate(dateOfHire),
-        departments: departmentIds.map(id => ({
+        departments: departmentIds.map((id, index) => ({
           departmentId: Number(id),
-          name: "string" // Возможно, вам нужно получать имя отдела откуда-то или позволить вводить его
+          name: departmentNames[index] || ''
         })),
         workshop: {
           workshopId: Number(workshopId),
-          name: "string" // Аналогично, возможно, нужно получать имя цеха
+          name: workshopName
         },
         position: {
           positionId: Number(positionId),
-          title: "string" // Возможно, нужно получать название должности
+          title: positionTitle
         },
         address: {
-          addressId: 0, // Если адрес создается вместе с сотрудником, возможно, backend сам назначит ID
+          addressId: 0,
           street,
           houseNumber,
           city,
@@ -117,7 +114,7 @@ export function CreateEmployeeForm({ onCreated }) {
         familySize: Number(familySize),
         numberOfChildren: Number(numberOfChildren),
         employmentArchive: employmentArchive.map(record => ({
-          recordId: Number(record.recordId) || 0, // Если запись новая, возможно, ID не нужен
+          recordId: Number(record.recordId) || 0, 
           startDate: formatDate(record.startDate),
           endDate: formatDate(record.endDate),
           position: {
@@ -127,7 +124,7 @@ export function CreateEmployeeForm({ onCreated }) {
         })),
         isUnionMember,
         unionBenefits: unionBenefits.map(benefit => ({
-          unionBenefitId: Number(benefit.unionBenefitId) || 0, // Аналогично, возможно, ID не нужен
+          unionBenefitId: Number(benefit.unionBenefitId) || 0,
           benefitType: Number(benefit.benefitType),
           dateReceived: formatDate(benefit.dateReceived)
         })
@@ -350,6 +347,16 @@ export function CreateEmployeeForm({ onCreated }) {
         </div>
 
         <div>
+          <label className="block font-medium mb-1">Название цеха*</label>
+          <input 
+            required
+            className="border border-gray-300 p-2 w-full rounded"
+            value={workshopName}
+            onChange={(e) => setWorkshopName(e.target.value)}
+          />
+        </div>
+
+        <div>
           <label className="block font-medium mb-1">ID Должности*</label>
           <input 
             required
@@ -360,14 +367,55 @@ export function CreateEmployeeForm({ onCreated }) {
           />
         </div>
 
-        <div className="col-span-2">
-          <label className="block font-medium mb-1">ID Отделов (через запятую)</label>
+        <div>
+          <label className="block font-medium mb-1">Название должности*</label>
           <input 
+            required
             className="border border-gray-300 p-2 w-full rounded"
-            placeholder="1, 2, 3"
-            value={departmentIds}
-            onChange={(e) => setDepartmentIds(e.target.value.split(',').map(id => id.trim()))}
+            value={positionTitle}
+            onChange={(e) => setPositionTitle(e.target.value)}
           />
+        </div>
+
+        <div className="col-span-2">
+          <label className="block font-medium mb-1">ID Отделов и названия</label>
+          <div className="space-y-2">
+            {departmentIds.map((_, index) => (
+              <div key={index} className="flex gap-2">
+                <input 
+                  className="border border-gray-300 p-2 w-1/2 rounded"
+                  type="number"
+                  placeholder="ID отдела"
+                  value={departmentIds[index]}
+                  onChange={(e) => {
+                    const newIds = [...departmentIds];
+                    newIds[index] = e.target.value;
+                    setDepartmentIds(newIds);
+                  }}
+                />
+                <input 
+                  className="border border-gray-300 p-2 w-1/2 rounded"
+                  placeholder="Название отдела"
+                  value={departmentNames[index] || ''}
+                  onChange={(e) => {
+                    const newNames = [...departmentNames];
+                    newNames[index] = e.target.value;
+                    setDepartmentNames(newNames);
+                  }}
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+              onClick={() => {
+                setDepartmentIds([...departmentIds, '']);
+                setDepartmentNames([...departmentNames, '']);
+              }}
+            >
+              Добавить отдел
+            </button>
+          </div>
         </div>
       </div>
 
@@ -520,7 +568,6 @@ export function CreateEmployeeForm({ onCreated }) {
                   <option value="">Выберите тип</option>
                   <option value="0">Тип 0</option>
                   <option value="1">Тип 1</option>
-                  {/* Добавьте остальные типы по необходимости */}
                 </select>
               </div>
               <div className="col-span-2">
