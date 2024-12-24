@@ -47,8 +47,8 @@ export function CreateEmployeeForm({ onCreated }) {
     date.setMinutes(now.getMinutes());
     date.setSeconds(now.getSeconds());
     date.setMilliseconds(now.getMilliseconds());
-    return date.toISOString().slice(0, -1); // Убираем 'Z' в конце
-  };
+    return date.toISOString(); // Сохраняем 'Z' в конце
+  };  
 
   const handleEmploymentArchiveChange = (index, field, value) => {
     const updatedArchive = [...employmentArchive]
