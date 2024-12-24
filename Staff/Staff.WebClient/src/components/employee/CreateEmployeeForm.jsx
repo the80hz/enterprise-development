@@ -58,7 +58,10 @@ export function CreateEmployeeForm({ onCreated }) {
         gender: Number(gender),
         dateOfHire: formatDate(dateOfHire),
         // Упрощаем структуру departments и устанавливаем пустой массив по умолчанию
-        departments: [],
+        departments: departmentIds.map(id => ({
+          departmentId: Number(id),
+          name: "" // Добавить получение имени отдела
+        })),
         // Добавляем проверку на наличие workshopId
         workshop: workshopId ? {
           workshopId: Number(workshopId),
@@ -224,6 +227,30 @@ export function CreateEmployeeForm({ onCreated }) {
       <input className="border border-gray-300 p-2 w-full rounded" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
       <label className="block font-semibold mb-1">Страна</label>
       <input className="border border-gray-300 p-2 w-full rounded" value={country} onChange={(e) => setCountry(e.target.value)} />
+
+      <label className="block font-semibold mb-1">Отделы</label>
+      <input
+        type="text"
+        className="border border-gray-300 p-2 w-full rounded"
+        value={departmentIds}
+        onChange={(e) => setDepartmentIds(e.target.value.split(',').map(id => id.trim()))}
+      />
+
+      <label className="block font-semibold mb-1">ID Цеха</label>
+      <input
+        type="number"
+        className="border border-gray-300 p-2 w-full rounded"
+        value={workshopId}
+        onChange={(e) => setWorkshopId(e.target.value)}
+      />
+
+      <label className="block font-semibold mb-1">ID Должности</label>
+      <input
+        type="number"
+        className="border border-gray-300 p-2 w-full rounded"
+        value={positionId}
+        onChange={(e) => setPositionId(e.target.value)}
+      />
 
       <button
         type="submit"
