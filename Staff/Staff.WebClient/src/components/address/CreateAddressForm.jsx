@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import api from '../../services/api';
+import { addressService } from '../../services/addressService';
 
 export function CreateAddressForm({ onCreated }) {
   const [street, setStreet] = useState('');
@@ -14,7 +14,7 @@ export function CreateAddressForm({ onCreated }) {
     setStatusMessage(''); // Сброс предыдущих сообщений
 
     try {
-      const response = await api.post('Address', {
+      const response = await addressService.create({
         street,
         houseNumber,
         city,

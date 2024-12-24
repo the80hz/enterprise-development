@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { employeeService } from '../services/employeeService'
+import { employeeService } from '../../services/employeeService'
 
 export function CreateEmployeeForm({ onCreated }) {
   const [name, setName] = useState('')

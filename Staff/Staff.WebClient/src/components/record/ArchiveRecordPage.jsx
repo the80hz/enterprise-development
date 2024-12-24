@@ -49,7 +49,7 @@ export function ArchiveRecordPage() {
                 {record.endDate && (
                   <div>Окончание: {new Date(record.endDate).toLocaleDateString()}</div>
                 )}
-                <div>Должность: {record.position.title}</div>
+                <div>Должность: {record.position?.title || 'Не указана'}</div>
               </div>
             ))}
           </div>

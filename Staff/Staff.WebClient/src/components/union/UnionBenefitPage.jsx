@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { unionBenefitService } from '../../services/unionBenefitService';
-import { CreateUnionBenefitForm } from '../components/union/CreateUnionBenefitForm';
+import { CreateUnionBenefitForm } from './CreateUnionBenefitForm';
 
 export function UnionBenefitPage() {
   const [benefits, setBenefits] = useState([]);

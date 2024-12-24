@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { workshopService } from '../../services/workshopService';
-import { CreateWorkshopForm } from '../components/workshop/CreateWorkshopForm';
+import { CreateWorkshopForm } from './CreateWorkshopForm';
 
 export function WorkshopPage() {
   const [workshops, setWorkshops] = useState([]);

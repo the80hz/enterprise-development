@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { StaffClient } from './pages/employee/StaffClient';
-import { DepartmentPage } from './pages/department/DepartmentPage';
-import { PositionPage } from './pages/position/PositionPage';
-import { WorkshopPage } from './pages/workshop/WorkshopPage';
-import { AddressPage } from './pages/address/AddressPage';
-import { ArchiveRecordPage } from './pages/archive/ArchiveRecordPage';
-import { UnionBenefitPage } from './pages/union/UnionBenefitPage';
+import { EmployeePage } from './components/employee/EmployeePage';
+import { DepartmentPage } from './components/department/DepartmentPage';
+import { PositionPage } from './components/position/PositionPage';
+import { WorkshopPage } from './components/workshop/WorkshopPage';
+import { AddressPage } from './components/address/AddressPage';
+import { ArchiveRecordPage } from './components/record/ArchiveRecordPage';
+import { UnionBenefitPage } from './components/union/UnionBenefitPage';
 
 import './App.css'
 
@@ -33,7 +33,7 @@ function App() {
                 <Link to="/addresses" className="text-gray-700 hover:text-blue-500">Адреса</Link>
               </li>
               <li>
-                <Link to="/archive" className="text-gray-700 hover:text-blue-500">Архив</Link>
+                <Link to="/record" className="text-gray-700 hover:text-blue-500">Архив</Link>
               </li>
               <li>
                 <Link to="/benefits" className="text-gray-700 hover:text-blue-500">Льготы</Link>
@@ -43,14 +43,13 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<StaffClient />} />
+          <Route path="/" element={<EmployeePage />} />
           <Route path="/departments" element={<DepartmentPage />} />
           <Route path="/positions" element={<PositionPage />} />
           <Route path="/workshops" element={<WorkshopPage />} />
           <Route path="/addresses" element={<AddressPage />} />
-          <Route path="/archive" element={<ArchiveRecordPage />} />
+          <Route path="/record" element={<ArchiveRecordPage />} />
           <Route path="/benefits" element={<UnionBenefitPage />} />
-          {/* Добавить другие маршруты по мере создания страниц */}
         </Routes>
       </div>
     </Router>
