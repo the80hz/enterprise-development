@@ -14,6 +14,17 @@ export function EmployeePage() {
     }
   }
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Вы уверены, что хотите удалить этого сотрудника?')) {
+      try {
+        await employeeService.delete(id);
+        loadEmployees();
+      } catch (error) {
+        console.error('Ошибка при удалении сотрудника:', error);
+      }
+    }
+  };
+
   useEffect(() => {
     loadEmployees()
   }, [])
@@ -36,10 +47,16 @@ export function EmployeePage() {
               <li key={emp.registrationNumber} className="flex items-center justify-between p-4 bg-white rounded shadow">
                 <div>
                   <span className="font-bold">{emp.surname} {emp.name}</span> ({emp.registrationNumber})
+                  <div className="text-sm text-gray-500">
+                    {emp.position?.title || 'Должность не указана'}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-500">
-                  {emp.position?.title || 'Должность не указана'}
-                </div>
+                <button
+                  onClick={() => handleDelete(emp.registrationNumber)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Удалить
+                </button>
               </li>
             ))}
           </ul>

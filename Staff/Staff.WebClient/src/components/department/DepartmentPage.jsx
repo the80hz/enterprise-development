@@ -14,6 +14,17 @@ export function DepartmentPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Вы уверены, что хотите удалить этот отдел?')) {
+      try {
+        await departmentService.delete(id);
+        loadDepartments();
+      } catch (error) {
+        console.error('Ошибка при удалении отдела:', error);
+      }
+    }
+  };
+
   useEffect(() => {
     loadDepartments();
   }, []);
@@ -35,6 +46,12 @@ export function DepartmentPage() {
             {departments.map((dept) => (
               <li key={dept.departmentId} className="flex items-center justify-between p-4 bg-white rounded shadow">
                 <div className="font-medium">{dept.name}</div>
+                <button
+                  onClick={() => handleDelete(dept.departmentId)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Удалить
+                </button>
               </li>
             ))}
           </ul>

@@ -14,6 +14,17 @@ export function WorkshopPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Вы действительно хотите удалить этот цех?')) {
+      try {
+        await workshopService.delete(id);
+        loadWorkshops();
+      } catch (error) {
+        console.error('Ошибка при удалении цеха:', error);
+      }
+    }
+  };
+
   useEffect(() => {
     loadWorkshops();
   }, []);
@@ -35,6 +46,12 @@ export function WorkshopPage() {
             {workshops.map((workshop) => (
               <li key={workshop.workshopId} className="flex items-center justify-between p-4 bg-white rounded shadow">
                 <div className="font-medium">{workshop.name}</div>
+                <button
+                  onClick={() => handleDelete(workshop.workshopId)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Удалить
+                </button>
               </li>
             ))}
           </ul>

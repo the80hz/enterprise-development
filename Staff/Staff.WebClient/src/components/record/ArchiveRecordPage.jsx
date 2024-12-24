@@ -29,6 +29,17 @@ export function ArchiveRecordPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Вы действительно хотите удалить эту запись?')) {
+      try {
+        await archiveRecordService.delete(id);
+        loadRecords();
+      } catch (error) {
+        console.error('Ошибка при удалении записи:', error);
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold text-center mb-8">Архив трудоустройства</h2>
@@ -44,12 +55,20 @@ export function ArchiveRecordPage() {
         ) : (
           <div className="grid gap-4">
             {records.map(record => (
-              <div key={record.recordId} className="bg-white p-4 rounded shadow">
-                <div>Начало: {new Date(record.startDate).toLocaleDateString()}</div>
-                {record.endDate && (
-                  <div>Окончание: {new Date(record.endDate).toLocaleDateString()}</div>
-                )}
-                <div>Должность: {record.position?.title || 'Не указана'}</div>
+              <div key={record.recordId} className="bg-white p-4 rounded shadow flex justify-between items-center">
+                <div>
+                  <div>Начало: {new Date(record.startDate).toLocaleDateString()}</div>
+                  {record.endDate && (
+                    <div>Окончание: {new Date(record.endDate).toLocaleDateString()}</div>
+                  )}
+                  <div>Должность: {record.position?.title || 'Не указана'}</div>
+                </div>
+                <button
+                  onClick={() => handleDelete(record.recordId)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Удалить
+                </button>
               </div>
             ))}
           </div>

@@ -14,6 +14,17 @@ export function PositionPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Вы действительно хотите удалить эту должность?')) {
+      try {
+        await positionService.delete(id);
+        loadPositions();
+      } catch (error) {
+        console.error('Ошибка при удалении должности:', error);
+      }
+    }
+  };
+
   useEffect(() => {
     loadPositions();
   }, []);
@@ -35,6 +46,12 @@ export function PositionPage() {
             {positions.map((position) => (
               <li key={position.positionId} className="flex items-center justify-between p-4 bg-white rounded shadow">
                 <div className="font-medium">{position.title}</div>
+                <button
+                  onClick={() => handleDelete(position.positionId)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Удалить
+                </button>
               </li>
             ))}
           </ul>
