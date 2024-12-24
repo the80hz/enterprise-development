@@ -27,46 +27,69 @@ export function CreateEmployeeForm({ onCreated }) {
   // Добавляем состояние для статуса
   const [statusMessage, setStatusMessage] = useState('');
 
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    // Получаем текущее время
+    const now = new Date();
+    // Комбинируем дату из инпута со временем
+    date.setHours(now.getHours());
+    date.setMinutes(now.getMinutes());
+    date.setSeconds(now.getSeconds());
+    date.setMilliseconds(now.getMilliseconds());
+    return date.toISOString().slice(0, -1); // Убираем 'Z' в конце
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await employeeService.create({
+      // Проверяем обязательные поля перед отправкой
+      if (!name || !surname || !patronymic || !registrationNumber || !dateOfHire) {
+        setStatusMessage('Заполните обязательные поля');
+        return;
+      }
+
+      const employeeData = {
         registrationNumber: Number(registrationNumber),
         surname,
         name,
         patronymic,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
+        dateOfBirth: formatDate(dateOfBirth),
         gender: Number(gender),
-        dateOfHire: dateOfHire ? new Date(dateOfHire).toISOString() : null,
-        departments: departmentIds.map(id => ({
-          departmentId: Number(id),
-          name: ""
-        })),
-        workshop: {
+        dateOfHire: formatDate(dateOfHire),
+        // Упрощаем структуру departments и устанавливаем пустой массив по умолчанию
+        departments: [],
+        // Добавляем проверку на наличие workshopId
+        workshop: workshopId ? {
           workshopId: Number(workshopId),
-          name: ""
-        },
-        position: {
+          name: "Workshop" // Добавляем обязательное имя
+        } : null,
+        // Добавляем проверку на наличие positionId
+        position: positionId ? {
           positionId: Number(positionId),
-          title: ""
-        },
+          title: "Position" // Добавляем обязательный заголовок
+        } : null,
         address: {
           addressId: 0,
-          street,
-          houseNumber,
-          city,
-          postalCode,
-          country
+          street: street || "",
+          houseNumber: houseNumber || "",
+          city: city || "",
+          postalCode: postalCode || "",
+          country: country || ""
         },
-        workPhone,
-        homePhone,
+        workPhone: workPhone || "",
+        homePhone: homePhone || "",
         maritalStatus: Number(maritalStatus),
-        familySize: Number(familySize),
-        numberOfChildren: Number(numberOfChildren),
+        familySize: Number(familySize) || 0,
+        numberOfChildren: Number(numberOfChildren) || 0,
         employmentArchive: [],
         isUnionMember,
         unionBenefits: []
-      });
+      };
+
+      console.log('Отправляемые данные:', employeeData); // Для отладки
+
+      const response = await employeeService.create(employeeData);
 
       if (response.status === 201) {
         setStatusMessage('OK');
@@ -95,7 +118,11 @@ export function CreateEmployeeForm({ onCreated }) {
       }
     } catch (error) {
       setStatusMessage('Not OK');
-      console.error('Ошибка:', error.message);
+      console.error('Ошибка:', error.response?.data || error.message);
+      // Добавляем вывод детальной информации об ошибке
+      if (error.response?.data?.errors) {
+        console.error('Ошибки валидации:', error.response.data.errors);
+      }
     }
   }
 

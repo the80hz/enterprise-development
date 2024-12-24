@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { CreateEmployeeForm } from './CreateEmployeeForm'
 import { employeeService } from '../services/employeeService'
 
-export function StaffClient() {
+export function EmployeePage() {
   const [employees, setEmployees] = useState([])
 
   const loadEmployees = async () => {
