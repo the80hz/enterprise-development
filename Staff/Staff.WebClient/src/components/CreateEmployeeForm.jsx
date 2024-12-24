@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { employeeService } from '../services/employeeService'
 
 export function CreateEmployeeForm({ onCreated }) {
   const [name, setName] = useState('')
@@ -29,48 +30,45 @@ export function CreateEmployeeForm({ onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:5032/api/Employee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          registrationNumber: Number(registrationNumber),
-          surname,
-          name,
-          patronymic,
-          dateOfBirth: new Date(dateOfBirth).toISOString(),
-          gender: Number(gender), // 0 или 1 вместо 'Male'/'Female'
-          dateOfHire: new Date(dateOfHire).toISOString(),
-          departments: departmentIds.map(id => ({
-            departmentId: Number(id),
-            name: "" // Добавить получение имени отдела
-          })),
-          workshop: {
-            workshopId: Number(workshopId),
-            name: "" // Добавить получение имени цеха
-          },
-          position: {
-            positionId: Number(positionId),
-            title: "" // Добавить получение названия должности
-          },
-          address: {
-            addressId: 0, // ID будет назначен сервером
-            street,
-            houseNumber,
-            city,
-            postalCode,
-            country
-          },
-          workPhone,
-          homePhone,
-          maritalStatus: Number(maritalStatus), // 0, 1, etc вместо 'Single'/'Married'
-          familySize: Number(familySize),
-          numberOfChildren: Number(numberOfChildren),
-          employmentArchive: [], // Если нужно, добавить историю трудоустройства
-          isUnionMember,
-          unionBenefits: [] // Если нужно, добавить льготы
-        }),
+      const response = await employeeService.create({
+        registrationNumber: Number(registrationNumber),
+        surname,
+        name,
+        patronymic,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
+        gender: Number(gender),
+        dateOfHire: dateOfHire ? new Date(dateOfHire).toISOString() : null,
+        departments: departmentIds.map(id => ({
+          departmentId: Number(id),
+          name: ""
+        })),
+        workshop: {
+          workshopId: Number(workshopId),
+          name: ""
+        },
+        position: {
+          positionId: Number(positionId),
+          title: ""
+        },
+        address: {
+          addressId: 0,
+          street,
+          houseNumber,
+          city,
+          postalCode,
+          country
+        },
+        workPhone,
+        homePhone,
+        maritalStatus: Number(maritalStatus),
+        familySize: Number(familySize),
+        numberOfChildren: Number(numberOfChildren),
+        employmentArchive: [],
+        isUnionMember,
+        unionBenefits: []
       });
-      if (response.ok) {
+
+      if (response.status === 201) {
         setStatusMessage('OK');
         setName('')
         setSurname('')
@@ -93,14 +91,11 @@ export function CreateEmployeeForm({ onCreated }) {
         setDepartmentIds([])
         setWorkshopId('')
         setPositionId('')
-        onCreated && onCreated()
-      } else {
-        setStatusMessage('Not OK');
-        console.error('Ошибка при создании сотрудника', response.statusText)
+        onCreated && onCreated();
       }
     } catch (error) {
       setStatusMessage('Not OK');
-      console.error(error)
+      console.error('Ошибка:', error.message);
     }
   }
 

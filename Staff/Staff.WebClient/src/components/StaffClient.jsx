@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react'
 import { CreateEmployeeForm } from './CreateEmployeeForm'
+import { employeeService } from '../services/employeeService'
 
 export function StaffClient() {
   const [employees, setEmployees] = useState([])
 
-  const loadEmployees = () => {
-    fetch('http://localhost:5032/api/Employee')
-      .then((response) => response.json())
-      .then((data) => setEmployees(data))
-      .catch(console.error)
+  const loadEmployees = async () => {
+    try {
+      const response = await employeeService.getAll();
+      setEmployees(response.data);
+    } catch (error) {
+      console.error('Ошибка при загрузке сотрудников:', error);
+    }
   }
 
   useEffect(() => {
