@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { archiveRecordService } from '../services/archiveRecordService';
+import { archiveRecordService } from '../../services/archiveRecordService';
 import { CreateArchiveRecordForm } from './CreateArchiveRecordForm';
 
 export function ArchiveRecordPage() {

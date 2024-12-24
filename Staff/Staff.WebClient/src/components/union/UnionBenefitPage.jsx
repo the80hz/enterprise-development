@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { unionBenefitService } from '../services/unionBenefitService';
+import { unionBenefitService } from '../../services/unionBenefitService';
 import { CreateUnionBenefitForm } from '../components/union/CreateUnionBenefitForm';
 
 export function UnionBenefitPage() {

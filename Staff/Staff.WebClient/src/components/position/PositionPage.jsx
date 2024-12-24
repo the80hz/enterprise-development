@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { positionService } from '../services/positionService';
+import { positionService } from '../../services/positionService';
 import { CreatePositionForm } from './CreatePositionForm';
 
 export function PositionPage() {

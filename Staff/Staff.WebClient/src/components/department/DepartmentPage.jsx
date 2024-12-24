@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { departmentService } from '../services/departmentService';
+import { departmentService } from '../../services/departmentService';
 import { CreateDepartmentForm } from './CreateDepartmentForm';
 
 export function DepartmentPage() {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { workshopService } from '../services/workshopService';
+import { workshopService } from '../../services/workshopService';
 import { CreateWorkshopForm } from '../components/workshop/CreateWorkshopForm';
 
 export function WorkshopPage() {
