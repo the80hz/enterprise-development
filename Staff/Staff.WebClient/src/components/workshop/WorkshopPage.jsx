@@ -45,7 +45,7 @@ export function WorkshopPage() {
           <ul className="space-y-4">
             {workshops.map((workshop) => (
               <li key={workshop.workshopId} className="flex items-center justify-between p-4 bg-white rounded shadow">
-                <div className="font-medium">{workshop.name}</div>
+                <div className="font-bold">{workshop.name}</div>
                 <button
                   onClick={() => handleDelete(workshop.workshopId)}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"

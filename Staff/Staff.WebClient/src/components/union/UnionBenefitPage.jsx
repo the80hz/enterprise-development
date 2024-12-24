@@ -31,7 +31,7 @@ export function UnionBenefitPage() {
 
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-3xl font-bold text-center mb-8">Профсоюзные льготы</h2>
+      <h2 className="text-3xl font-bold text-center mb-8">Управление Льготами</h2>
       
       <div className="mb-10">
         <CreateUnionBenefitForm onCreated={loadBenefits} />
@@ -42,12 +42,12 @@ export function UnionBenefitPage() {
         {benefits.length === 0 ? (
           <p className="text-gray-600">Нет льгот для отображения.</p>
         ) : (
-          <div className="grid gap-4">
+          <ul className="space-y-4">
             {benefits.map(benefit => (
-              <div key={benefit.unionBenefitId} className="bg-white p-4 rounded shadow flex justify-between items-center">
+              <li key={benefit.unionBenefitId} className="flex items-center justify-between p-4 bg-white rounded shadow">
                 <div>
-                  <div>Тип льготы: {benefit.benefitType}</div>
-                  <div>Дата получения: {new Date(benefit.dateReceived).toLocaleDateString()}</div>
+                  <div className="font-bold">Тип льготы: {benefit.benefitType}</div>
+                  <div className="text-sm text-gray-600">Дата получения: {new Date(benefit.dateReceived).toLocaleDateString()}</div>
                 </div>
                 <button
                   onClick={() => handleDelete(benefit.unionBenefitId)}
@@ -55,9 +55,9 @@ export function UnionBenefitPage() {
                 >
                   Удалить
                 </button>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
     </div>
