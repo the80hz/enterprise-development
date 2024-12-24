@@ -6,11 +6,11 @@ export function CreateEmployeeForm({ onCreated }) {
   const [patronymic, setPatronymic] = useState('')
   const [registrationNumber, setRegistrationNumber] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
-  const [gender, setGender] = useState('Male');
+  const [gender, setGender] = useState('0');
   const [dateOfHire, setDateOfHire] = useState('');
   const [workPhone, setWorkPhone] = useState('');
   const [homePhone, setHomePhone] = useState('');
-  const [maritalStatus, setMaritalStatus] = useState('Single');
+  const [maritalStatus, setMaritalStatus] = useState('0');
   const [familySize, setFamilySize] = useState(0);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [isUnionMember, setIsUnionMember] = useState(false);
@@ -33,31 +33,43 @@ export function CreateEmployeeForm({ onCreated }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          surname,
-          patronymic,
           registrationNumber: Number(registrationNumber),
-          dateOfBirth,
-          gender,
-          dateOfHire,
-          workPhone,
-          homePhone,
-          maritalStatus,
-          familySize: Number(familySize),
-          numberOfChildren: Number(numberOfChildren),
-          isUnionMember,
+          surname,
+          name,
+          patronymic,
+          dateOfBirth: new Date(dateOfBirth).toISOString(),
+          gender: Number(gender), // 0 или 1 вместо 'Male'/'Female'
+          dateOfHire: new Date(dateOfHire).toISOString(),
+          departments: departmentIds.map(id => ({
+            departmentId: Number(id),
+            name: "" // Добавить получение имени отдела
+          })),
+          workshop: {
+            workshopId: Number(workshopId),
+            name: "" // Добавить получение имени цеха
+          },
+          position: {
+            positionId: Number(positionId),
+            title: "" // Добавить получение названия должности
+          },
           address: {
+            addressId: 0, // ID будет назначен сервером
             street,
             houseNumber,
             city,
             postalCode,
             country
           },
-          departments: departmentIds.map(id => ({ departmentId: Number(id) })),
-          workshop: { workshopId: Number(workshopId) },
-          position: { positionId: Number(positionId) }
+          workPhone,
+          homePhone,
+          maritalStatus: Number(maritalStatus), // 0, 1, etc вместо 'Single'/'Married'
+          familySize: Number(familySize),
+          numberOfChildren: Number(numberOfChildren),
+          employmentArchive: [], // Если нужно, добавить историю трудоустройства
+          isUnionMember,
+          unionBenefits: [] // Если нужно, добавить льготы
         }),
-      })
+      });
       if (response.ok) {
         setStatusMessage('OK');
         setName('')
@@ -65,11 +77,11 @@ export function CreateEmployeeForm({ onCreated }) {
         setPatronymic('')
         setRegistrationNumber('')
         setDateOfBirth('')
-        setGender('Male')
+        setGender('0')
         setDateOfHire('')
         setWorkPhone('')
         setHomePhone('')
-        setMaritalStatus('Single')
+        setMaritalStatus('0')
         setFamilySize(0)
         setNumberOfChildren(0)
         setIsUnionMember(false)
@@ -120,9 +132,13 @@ export function CreateEmployeeForm({ onCreated }) {
       />
 
       <label className="block font-semibold mb-1">Пол</label>
-      <select className="border border-gray-300 p-2 w-full rounded" value={gender} onChange={(e) => setGender(e.target.value)}>
-        <option value="Male">Мужской</option>
-        <option value="Female">Женский</option>
+      <select 
+        className="border border-gray-300 p-2 w-full rounded" 
+        value={gender} 
+        onChange={(e) => setGender(e.target.value)}
+      >
+        <option value="0">Мужской</option>
+        <option value="1">Женский</option>
       </select>
 
       <label className="block font-semibold mb-1">Дата приема на работу</label>
@@ -140,9 +156,15 @@ export function CreateEmployeeForm({ onCreated }) {
       <input className="border border-gray-300 p-2 w-full rounded" value={homePhone} onChange={(e) => setHomePhone(e.target.value)} />
 
       <label className="block font-semibold mb-1">Семейное положение</label>
-      <select className="border border-gray-300 p-2 w-full rounded" value={maritalStatus} onChange={(e) => setMaritalStatus(e.target.value)}>
-        <option value="Single">Не женат/Не замужем</option>
-        <option value="Married">Женат/Замужем</option>
+      <select 
+        className="border border-gray-300 p-2 w-full rounded" 
+        value={maritalStatus} 
+        onChange={(e) => setMaritalStatus(e.target.value)}
+      >
+        <option value="0">Не женат/Не замужем</option>
+        <option value="1">Женат/Замужем</option>
+        <option value="2">Разведен(а)</option>
+        <option value="3">Вдовец/Вдова</option>
       </select>
 
       <label className="block font-semibold mb-1">Размер семьи</label>
